@@ -1,7 +1,20 @@
 import React, { Component } from 'react'
-import { Link } from "react-router"
+import { Link, withRouter } from "react-router"
+import { logout } from '../Services/auth'
 
 class Nav extends Component {
+
+  constructor(props) {
+    super(props)
+    this.closeSession = this.closeSession.bind(this)
+  }
+
+  closeSession() {
+    logout( success => {
+      this.props.router.push('/login')
+    })
+  }
+
   render() {
     return (
       <div className="navbar navbar-inverse bg-purple-600">
@@ -31,7 +44,7 @@ class Nav extends Component {
             <li className="dropdown dropdown-user">
               <a className="dropdown-toggle" data-toggle="dropdown">
                 <img src="assets/images/placeholder.jpg" alt=""/>
-                <span>Victoria</span>
+                <span>John Doe</span>
                 <i className="caret"></i>
               </a>
 
@@ -39,7 +52,7 @@ class Nav extends Component {
                 <li><a href="#"><i className="icon-user-plus"></i> Mi Perfil</a></li>
                 <li className="divider"></li>
                 <li><a href="#"><i className="icon-cog5"></i> Configuración</a></li>
-                <li><a href="#"><i className="icon-switch2"></i> Salir</a></li>
+                <li><a href="#" onClick={ this.closeSession }><i className="icon-switch2"></i> Salir</a></li>
               </ul>
             </li>
           </ul>
@@ -49,4 +62,4 @@ class Nav extends Component {
   }
 }
 
-export default Nav;
+export default withRouter(Nav);

@@ -1,11 +1,12 @@
 const BASE_URL = 'http://127.0.0.1:8080/api';
+const TOKEN = 'token';
 
 function getToken() {
-  return localStorage.getItem('token')
+  return localStorage.getItem(TOKEN)
 }
 
 function saveToken( token ) {
-  return localStorage.setItem('token', token)
+  return localStorage.setItem(TOKEN, token)
 }
 
 function requestAccess(email, password) {
@@ -29,12 +30,19 @@ function requestAccess(email, password) {
 }
 
 function login(email, pass) {
-  if ( getToken() ) return true
-  return requestAccess(email, pass)
+  saveToken('123')
+  return true
+  // if ( getToken() ) return true
+  // return requestAccess(email, pass)
+}
+
+function logout(cb) {
+  localStorage.removeItem(TOKEN)
+  cb(true)
 }
 
 function isLogged() {
   return !!getToken()
 }
 
-export { login, isLogged }
+export { login, logout, isLogged }

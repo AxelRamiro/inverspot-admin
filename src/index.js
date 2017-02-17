@@ -12,6 +12,9 @@ import Investments from './Pages/Investments'
 import builders from './Pages/builders'
 import userNew from './Pages/userNew'
 import { isLogged } from './Services/auth'
+import investmentNew from './Pages/investmentNew'
+import builderNew from './Pages/builderNew'
+
 
 function requireAuth(nextState, replace) {
   if (!isLogged()) {
@@ -38,9 +41,11 @@ ReactDOM.render(
       </Route>
       <Route path='investments'>
         <Route path='list' component={Investments} />
+        <Route path='new' component={investmentNew} />
       </Route>
       <Route path='builders'>
         <Route path='list' component={builders} />
+        <Route path='new' component={builderNew} />
       </Route>
     </Route>
     <Route path="/login" component={ Login } />

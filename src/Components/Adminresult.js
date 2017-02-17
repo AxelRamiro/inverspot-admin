@@ -1,9 +1,29 @@
 import React, { Component } from 'react'
+import Swal from 'react-swal'
 
 class Adminresult extends Component {
+
+  constructor(props) {
+    super(props)
+    this.deleteUser = this.deleteUser.bind(this)
+    this.state = {
+      showConfirm: false,
+      callback: () => null
+    }
+  }
+
+  deleteUser() {
+    this.setState({
+      showConfirm: true,
+      callback: confirm => console.log(confirm)
+    })
+  }
+
   render() {
     return (
       <div>
+        <Swal isOpen={ this.state.showConfirm || false }
+          callback={ this.state.callback || null } />
         <li className="media">
           <div className="media-left">
           </div>
@@ -26,14 +46,19 @@ class Adminresult extends Component {
                 <ul className="dropdown-menu dropdown-menu-right">
                   <li><a href="#"><i className="icon-cog pull-left"></i> Editar Perfil</a></li>
                   <li className="divider"></li>
-                  <li><a href="#"><i className="icon-cross2 text-danger" id="sweet_combine"></i> Eliminar</a></li>
+                  <li onClick={ this.deleteUser }>
+                    <a>
+                      <i className="icon-cross2 text-danger" id="sweet_combine"></i>
+                       Eliminar
+                     </a>
+                   </li>
                 </ul>
               </li>
             </ul>
           </div>
-        </li>  
-        <hr/> 
-      </div>                                         
+        </li>
+        <hr/>
+      </div>
     )
   }
 }

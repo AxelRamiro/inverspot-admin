@@ -1,8 +1,26 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router'
-
+import { login } from '../Services/auth'
+import { withRouter } from 'react-router';
 
 class Login extends Component {
+
+  constructor(props) {
+    super(props)
+    this.authenticate = this.authenticate.bind(this)
+    this.state = {
+      email: '',
+      password: ''
+    }
+  }
+
+  authenticate(e) {
+    e.preventDefault()
+    console.log('Auth init');
+    login(this.state.email, this.state.password)
+    this.props.router.push('/')
+      // .then( success => success && browserHistory.push('/') )
+  }
+
   render() {
     return (
       <div className="login-container login-cover">
@@ -50,11 +68,9 @@ class Login extends Component {
                     </div>
 
                     <div className="form-group">
-                      <Link to="/properties">
-                        <button type="submit" className="btn bg-blue btn-block">Ingresar
-                          <i className="icon-arrow-right14 position-right"></i>
-                        </button>
-                      </Link>
+                      <button onClick={ this.authenticate } className="btn bg-blue btn-block">Ingresar
+                        <i className="icon-arrow-right14 position-right"></i>
+                      </button>
                     </div>
                   </div>
                 </form>
@@ -68,4 +84,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default withRouter(Login);
