@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Nav from '../Components/Nav'
 import Sidebar from '../Components/Sidebar'
 import Footer from '../Components/Footer'
+import Headernav from '../Components/Headernav'
 
 class Layout extends Component {
   render() {
@@ -15,6 +16,7 @@ class Layout extends Component {
           <div className="page-content">
             <Sidebar/>
             <div className="content-wrapper">
+              <Headernav headerNav={'Todas las Propiedades'}/>
               {this.props.children}
               <div style={containerStyle}>
                 <Footer />

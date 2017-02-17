@@ -25,7 +25,7 @@ class Nav extends Component {
             <li><a className="sidebar-control sidebar-main-toggle hidden-xs"><i className="icon-paragraph-justify3"></i></a></li>
           </ul>
 
-          <p className="navbar-text"><span className="label bg-success">Online</span></p>
+          <p className="navbar-text"><span className="label bg-success">DEVELOPMENT</span></p>
 
           <ul className="nav navbar-nav navbar-right">
             <li className="dropdown dropdown-user">

@@ -1,6 +1,28 @@
 import React, { Component } from 'react'
 import { Link } from "react-router"
 
+function NavLink( props ) {
+  return (
+    <li>
+      <Link to={ `/${props.root}/list` } activeStyle={{ backgroundColor: '#26a69a' }}>
+        <i className={ props.icon }></i> <span>{ props.name }</span>
+      </Link>
+      <ul>
+        <li>
+          <Link to={ `/${props.root}/list` } activeClassName="active">
+            Todos los { props.name }
+          </Link>
+        </li>
+        <li>
+          <Link to={ `/${props.root}/new` } activeClassName="active">
+            Añadir { props.name }
+          </Link>
+        </li>
+      </ul>
+    </li>
+  )
+}
+
 class Sidebar extends Component {
   render() {
     return (
@@ -12,7 +34,7 @@ class Sidebar extends Component {
               <div className="media">
                 <a href="#" className="media-left"><img src="assets/images/placeholder.jpg" className="img-circle img-sm" alt=""/></a>
                 <div className="media-body">
-                  <span className="media-heading text-semibold">Victoria Baker</span>
+                  <span className="media-heading text-semibold">John Doe</span>
                   <div className="text-size-mini text-muted">
                     <i className="icon-user text-size-small"></i> &nbsp;Admin
                   </div>
@@ -34,90 +56,11 @@ class Sidebar extends Component {
               <ul className="navigation navigation-main navigation-accordion">
 
                 <li className="navigation-header"><span>Panel Principal</span> <i className="icon-menu" title="Main pages"></i></li>
-                <li>
-                  <Link to="/admins" activeStyle={{ backgroundColor: '#26a69a' }}>
-                    <i className="icon-stack2"></i> <span>Administradores</span>
-                  </Link>
-                  <ul>
-                    <li>
-                      <Link to="/admins" activeClassName="active">
-                        Todos los Administradores
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/admins/new" activeClassName="active">
-                        Añadir un Administrador
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <Link to="/properties" activeStyle={{ backgroundColor: '#26a69a' }}>
-                    <i className="icon-copy"></i>
-                    <span>Propiedades</span>
-                  </Link>
-                  <ul>
-                    <li>
-                      <Link to="/properties" activeClassName="active">
-                        Todas las Propiedades
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/properties/new" activeClassName="active">
-                        Añadir Nueva Propiedad
-                        <span className="label bg-warning-400">13</span>
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <Link to="/users" activeStyle={{ backgroundColor: '#26a69a' }}>
-                    <i className="icon-droplet2"></i> <span>Usuarios</span>
-                  </Link>
-                  <ul>
-                    <li>
-                      <Link to="/users" activeClassName="active">
-                        Todos los Usuarios
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/users/new" activeClassName="active">
-                        Añadir Nuevo Usuario
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <Link to="/investors" activeStyle={{ backgroundColor: '#26a69a' }}>
-                    <i className="icon-stack"></i> <span>Inversores</span>
-                  </Link>
-                  <ul>
-                    <li>
-                      <Link to="/investors" activeClassName="active">
-                        Todos los Inversores
-                      </Link>
-                    </li>
-                    <li><a href="agregar_inversor.html">Añadir Nueva Inversion</a></li>
-                  </ul>
-                </li>
-                <li>
-                  <Link to="/builders" activeStyle={{ backgroundColor: '#26a69a' }}>
-                    <i className="icon-file-css"></i> <span>Desarrolladores</span>
-                  </Link>
-                  <ul>
-                    <li>
-                      <Link to="/builders" activeClassName="active">
-                        Todos los Desarrolladores
-                      </Link>
-                    </li>
-                    <li>
-                    <Link to="/builders/new" activeClassName="active">
-                      Añadir Nuevo Desarrollador
-                    </Link>
-                    </li>
-                  </ul>
-                </li>
-
+                <NavLink root="admin-users" name="Administradores" icon="icon-stack2" />
+                <NavLink root="properties" name="Propiedades" icon="icon-copy" />
+                <NavLink root="users" name="Usuarios" icon="icon-droplet2" />
+                <NavLink root="investments" name="Inversiones" icon="icon-stack" />
+                <NavLink root="builders" name="Desarrolladores" icon="icon-file-css" />
               </ul>
             </div>
           </div>
