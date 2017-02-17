@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from "react-router"
 import Swal from 'react-swal'
 
 class Adminresult extends Component {
@@ -44,8 +45,13 @@ class Adminresult extends Component {
                 </a>
 
                 <ul className="dropdown-menu dropdown-menu-right">
-                  <li><a href="#"><i className="icon-cog pull-left"></i> Editar Perfil</a></li>
-                  <li className="divider"></li>
+                  <li>
+                  <Link to={`admin-users/${this.props._id}/edit`}>
+                    <i className="icon-cog pull-left"></i> Editar Perfil
+                  </Link>
+                  </li>
+                  <li className="divider">
+                  </li>
                   <li onClick={ this.deleteUser }>
                     <a>
                       <i className="icon-cross2 text-danger" id="sweet_combine"></i>

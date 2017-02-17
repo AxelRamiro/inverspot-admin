@@ -34,10 +34,12 @@ ReactDOM.render(
       <Route path='admin-users'>
         <Route path='list' component={Admins} />
         <Route path='new' component={adminNew} />
+        <Route path=':id/edit' component={adminNew} />
       </Route>
       <Route path='users'>
         <Route path='list' component={Users} />
         <Route path='new' component={userNew} />
+        <Route path=':id/edit' component={userNew} />
       </Route>
       <Route path='investments'>
         <Route path='list' component={Investments} />
