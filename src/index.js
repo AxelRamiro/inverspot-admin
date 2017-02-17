@@ -11,10 +11,19 @@ import propertyNew from './Pages/propertyNew'
 import Investments from './Pages/Investments'
 import builders from './Pages/builders'
 import userNew from './Pages/userNew'
+import { isLogged } from './Services/auth'
+
+function requireAuth(nextState, replace) {
+  if (!isLogged()) {
+    replace({
+      pathname: '/login'
+    })
+  }
+}
 
 ReactDOM.render(
   <Router history={hashHistory}>
-    <Route path='/' component={App}>
+    <Route path='/' component={App} onEnter={ requireAuth }>
       <Route path='properties'>
         <Route path='list' component={ Properties } />
         <Route path='new' component={propertyNew} />
