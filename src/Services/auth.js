@@ -10,12 +10,13 @@ function saveToken( token ) {
 }
 
 function requestAccess(email, password) {
+  let body = JSON.stringify({ email, password})
   const opts = {
     method: 'POST',
-    body: {
-      email,
-      password
-    }
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body
   }
   return fetch(`${BASE_URL}/auth`, opts)
     .then( res => {
@@ -25,15 +26,15 @@ function requestAccess(email, password) {
           return true
         })
       }
-      return false
+      throw new Error('Datos inválidos')
     })
 }
 
 function login(email, pass) {
-  saveToken('123')
-  return true
-  // if ( getToken() ) return true
-  // return requestAccess(email, pass)
+  // saveToken('123')
+  // return true
+  if ( getToken() ) return true
+  return requestAccess(email, pass)
 }
 
 function logout(cb) {
@@ -45,4 +46,4 @@ function isLogged() {
   return !!getToken()
 }
 
-export { login, logout, isLogged }
+export { login, logout, isLogged, getToken, BASE_URL }

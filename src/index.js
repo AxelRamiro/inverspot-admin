@@ -14,6 +14,8 @@ import userNew from './Pages/userNew'
 import { isLogged } from './Services/auth'
 import investmentNew from './Pages/investmentNew'
 import builderNew from './Pages/builderNew'
+import moment from 'moment'
+moment.locale('es')
 
 
 function requireAuth(nextState, replace) {
