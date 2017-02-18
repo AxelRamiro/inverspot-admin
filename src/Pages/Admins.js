@@ -1,23 +1,34 @@
 import React, { Component } from 'react'
 import Filterbar from '../Components/Filterbar'
 import Adminresult from '../Components/Adminresult'
-import Filterby from '../Components/Filterby'
+// import Filterby from '../Components/Filterby'
 import { list } from '../Services/user'
+
+function PowerUserList(props) {
+
+    let filtered = props.powerUsers.filter(user => {
+      return !(user.name.indexOf(props.filterText) === -1 || (props.filterTag && props.filterTag !== user.level))
+    })
+
+    return (
+      <ul className="media-list search-results-list content-group">
+        {filtered.map(user => (<Adminresult key={user._id} user={user} onRemove={ props.onRemoveItem } />) )}
+      </ul>
+    )
+
+}
 
 class Admins extends Component {
 
   constructor(props) {
     super(props)
+    this.filter = this.filter.bind(this)
     this.onRemoveItem = this.onRemoveItem.bind(this)
     this.state = {
-      powerUsers: []
+      powerUsers: [],
+      filterText: '',
+      filterTag:''
     }
-  }
-
-  componentDidMount() {
-    list({level:{ $in: ['admin', 'asesor'] }}, {sort:'name'}, 'name email telephone level createdAt')
-      .then( powerUsers => this.setState({powerUsers}) )
-      .catch( e => alert(e) )
   }
 
   onRemoveItem( user ) {
@@ -29,24 +40,31 @@ class Admins extends Component {
     })
   }
 
+  componentDidMount() {
+    list({level:{ $in: ['admin', 'asesor'] }}, {sort:'name'}, 'name email telephone level createdAt')
+      .then( powerUsers => this.setState({powerUsers, filtered: powerUsers}) )
+      .catch( e => alert(e) )
+  }
+
+  filter(filters) {
+    this.setState(filters)
+  }
+
   render() {
     return (
       <div className="content">
-        <Filterbar nameFilter='Busqueda de Administradores'>
 
-          <Filterby>
-            <li><a href="#"><i className="icon-calendar"></i> Fecha de Afiliación</a></li>
-            <li><a href="#"><i className="icon-user-tie"></i> Administrador</a></li>
-            <li><a href="#"><i className="icon-reading"></i> Asesor</a></li>
-          </Filterby>
+        <Filterbar nameFilter='Busqueda de Administradores' onFilterChange={ this.filter }>
         </Filterbar>
+        {/* <Filterby>
+          <li><a href="#"><i className="icon-calendar"></i> Fecha de Afiliación</a></li>
+          <li><a href="#"><i className="icon-user-tie"></i> Administrador</a></li>
+          <li><a href="#"><i className="icon-reading"></i> Asesor</a></li>
+        </Filterby> */}
         <div className="row">
           <div className="col-lg-12">
             <div className="panel panel-body">
-              <ul className="media-list search-results-list content-group">
-                { this.state.powerUsers.map(( e, i ) => <Adminresult key={e._id}
-                  user={e} onRemove={ this.onRemoveItem } /> ) }
-              </ul>
+              <PowerUserList powerUsers={ this.state.powerUsers } filterText={ this.state.filterText } filterTag={ this.state.filterTag } />
             </div>
           </div>
         </div>
