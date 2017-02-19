@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from "react-router"
 import Swal from 'react-swal'
+import moment from 'moment'
+import { remove } from '../Services/user'
 
 class Resultuser extends Component {
 
@@ -15,27 +17,47 @@ class Resultuser extends Component {
 
   deleteUser() {
     this.setState({
-      showConfirm: true
+      showConfirm: true,
+      callback: confirm => {
+        confirm && remove(this.props.user._id)
+          .then(removedUser => this.props.onRemove( removedUser ))
+          .catch(alert)
+      }
     })
   }
 
   render() {
+    let statustag
+    if (this.props.user.status === 'active')
+      statustag =(<span className="label bg-success">Activo</span>)
+    else
+      statustag =(<span className="label bg-danger">Inactivo</span>)
     return (
       <div>
-        <Swal isOpen={ this.state.showConfirm || false }
-          callback={ confirm => confirm && this.props.onDelete( this.props.user._id ) } />
+        <Swal
+          title="Eliminar usuario"
+          text={ `¿Está seguro que desea eliminar al usuario ${ this.props.user.name }?` }
+          confirmButtonText="Sí, eliminar"
+          confirmButtonColor="#f44336"
+          cancelButtonText="Cancelar"
+          type="error"
+          isOpen={ this.state.showConfirm || false }
+          callback={ this.state.callback || null } />
         <li className="media">
           <div className="media-body">
             <h6 className="media-heading"><a href="#">{this.props.user.name}</a></h6>
               <ul className="list-inline list-inline-separate text-muted">
-                <li><span className="label bg-info">Usuario</span><span className="label bg-success">Activo</span></li>
-                <li>Miembro desde: 14 marzo 2016</li>
-                <li><i className="icon-pin position-left"></i>Hidalgo</li>
+                <li>
+                  <span className="label bg-info">Usuario</span>
+                  {statustag}
+                </li>
+                <li>Miembro desde: { moment(this.props.user.createdAt).format('LL') }</li>
+                <li><i className="icon-pin position-left"></i>{ this.props.user.state }</li>
                 <li><i className="icon-paper position-left"></i>Medio: Facebook</li>
                 <li><i className="icon-paper position-left"></i>Asesor: <a href="#">Juan Ortega Garcia</a></li>
               </ul>
-              <p><i className="icon-mail5"></i> contact@hotmail.com <br/>
-              <i className="icon-phone2"></i> (770)-734-35</p>            
+              <p><i className="icon-mail5"></i> { this.props.user.email }<br/>
+              <i className="icon-phone2"></i> { this.props.user.telephone }</p>
           </div>
           <div className="media-right media-top">
             <ul className="icons-list text-nowrap">
@@ -56,9 +78,9 @@ class Resultuser extends Component {
               </li>
             </ul>
           </div>
-        </li>    
-        <hr/>     
-      </div>                
+        </li>
+        <hr/>
+      </div>
     )
   }
 }

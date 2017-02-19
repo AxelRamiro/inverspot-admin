@@ -13,7 +13,7 @@ class NewUser extends Component {
             <div className="col-lg-12">
               <div className="tabbable">
                 <div className="tab-content">
-                  <NewUserForm />
+                  <NewUserForm path={this.props.route}/>
                   { this.props.route.path === ':id/edit' && <InvestmentForm /> }
                 </div>
               </div>
@@ -27,4 +27,3 @@ class NewUser extends Component {
 }
 
 export default NewUser;
-
