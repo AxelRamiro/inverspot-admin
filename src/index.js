@@ -32,6 +32,7 @@ ReactDOM.render(
       <Route path='properties'>
         <Route path='list' component={ Properties } />
         <Route path='new' component={propertyNew} />
+        <Route path=':id/edit' component={propertyNew} />
       </Route>
       <Route path='admin-users'>
         <Route path='list' component={Admins} />
@@ -46,10 +47,12 @@ ReactDOM.render(
       <Route path='investments'>
         <Route path='list' component={Investments} />
         <Route path='new' component={investmentNew} />
+        <Route path=':id/edit' component={investmentNew} />
       </Route>
       <Route path='builders'>
         <Route path='list' component={builders} />
         <Route path='new' component={builderNew} />
+        <Route path=':id/edit' component={builderNew} />
       </Route>
     </Route>
     <Route path="/login" component={ Login } />
