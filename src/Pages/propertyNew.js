@@ -1,7 +1,115 @@
 import React, { Component } from 'react'
+import { list } from '../Services/builder'
+import { create, edit, list as pList } from '../Services/property'
+
+function PropertyFieldset(props) {
+  return (
+    <fieldset className="content-group">
+      <legend className="text-bold">{ props.title }</legend>
+      { props.children }
+    </fieldset>
+  )
+}
+
+function PropertyInput(props) {
+  let { children, group, ...allProps } = props;
+  let input = (<input { ...allProps } className={ props.className || 'form-control' } />)
+  return (
+    <div className="form-group">
+      <label className="control-label col-lg-3">
+        { children } { props.required && <span className="text-danger">*</span> }
+      </label>
+      <div className="col-lg-9">
+        { group ?
+          <div className="input-group">
+            <div className="input-group-addon">{ group }</div>
+            { input }
+          </div> : input }
+      </div>
+    </div>
+  )
+}
 
 class NewProperty extends Component {
+
+  constructor(props) {
+    super(props)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleInput = this.handleInput.bind(this)
+    this.state = {
+      property: {
+        title: "",
+        description: "",
+        image: "",
+        address: {
+            street: "",
+            number: "",
+            suburb: "",
+            city: "",
+            zipCode: 0,
+            coordinates: ""
+        },
+        idBuilder: "",
+        dataSheet: {
+            investAmount: 0,
+            estimatedTerm: 0,
+            totalShares: 0,
+            sharesSold: 0
+        },
+        marketResearch: {
+            totalCost: 0,
+            salePrice: 0,
+            salesCommission: 0,
+            utility: 0,
+            estimatedTime: 0,
+            yieldInTime: 0,
+            annualYield: 0
+        },
+        fixedData: {
+            objectiveFundraising: "",
+            expectedAnnualYield: 0,
+            expectedUtility: 0
+        }
+      },
+      builders: []
+    }
+  }
+
+  componentDidMount() {
+    list({},{},'name')
+      .then( builders => this.setState({ builders }) )
+    if(this.props.params.id) {
+      pList({_id: this.props.params.id},{}, '')
+        .then( property => this.setState({property: property[0]}) )
+        .catch(alert)
+    }
+  }
+
+  handleInput(e) {
+    e.preventDefault()
+    let name = e.target.name
+    let newState = Object.assign( this.state )
+    if (name.indexOf('.') > -1) {
+      let path = name.split('.')
+      newState.property[path[0]][path[1]] = e.target.value
+    }
+    else
+      newState.property[name] = e.target.value
+    this.setState(newState)
+  }
+
+  handleSubmit(e) {
+    e.preventDefault()
+    if(this.props.route.path === "new") {
+      return create( this.state.property )
+        .then( success => success && this.props.router.push('/properties/list') )
+    }
+    edit( this.state.property )
+      .then( success => success && this.props.router.push('/properties/list') )
+  }
+
   render() {
+    let property = this.state.property
     return (
       <div className="content">
 
@@ -11,203 +119,109 @@ class NewProperty extends Component {
           </div>
 
           <div className="panel-body">
-            <form className="form-horizontal form-validate-jquery" action="#">
-              <fieldset className="content-group">
+            <form className="form-horizontal" onSubmit={ this.handleSubmit } >
 
-                <legend className="text-bold">Información Básica</legend>
-                <div className="form-group">
-                  <label className="control-label col-lg-3">Título <span className="text-danger">*</span></label>
-                  <div className="col-lg-9">
-                    <input type="text" name="basic" className="form-control" required="required" placeholder=""/>
-                  </div>
-                </div>
+              <PropertyFieldset title="Información Básica">
+                <PropertyInput value={ property.title }
+                  onChange={ this.handleInput } name="title" required>Título</PropertyInput>
+
                 <div className="form-group">
                   <label className="control-label col-lg-3">Descripción del Proyecto <span className="text-danger">*</span></label>
                   <div className="col-lg-9">
                     <textarea rows="5" cols="5" name="textarea" className="form-control" required="required" placeholder="" aria-required="true"></textarea>
                   </div>
                 </div>
-                <div className="form-group">
-                  <label className="control-label col-lg-3">Imagen Principal del Proyecto <span className="text-danger">*</span></label>
-                  <div className="col-lg-9">
-                    <input type="file" name="styled_file" className="file-styled"  multiple="multiple" required="required"/>
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label className="control-label col-lg-3">Calle <span className="text-danger">*</span></label>
-                  <div className="col-lg-9">
-                    <input type="text" name="basic" className="form-control" required="required" placeholder=""/>
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label className="control-label col-lg-3">Número <span className="text-danger">*</span></label>
-                  <div className="col-lg-9">
-                    <input type="text" name="basic" className="form-control" required="required" placeholder=""/>
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label className="control-label col-lg-3">Colonia <span className="text-danger">*</span></label>
-                  <div className="col-lg-9">
-                    <input type="text" name="basic" className="form-control" required="required" placeholder=""/>
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label className="control-label col-lg-3">Ciudad <span className="text-danger">*</span></label>
-                  <div className="col-lg-9">
-                    <input type="text" name="basic" className="form-control" required="required" placeholder=""/>
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label className="control-label col-lg-3">Código Postal <span className="text-danger">*</span></label>
-                  <div className="col-lg-9">
-                    <input type="text" name="basic" className="form-control" required="required" placeholder=""/>
-                  </div>
-                </div>
+
+                <PropertyInput onChange={ this.handleInput } name="image" type="text" value={ property.file }
+                  className="file-styled" required>Imagen Principal del Proyecto</PropertyInput>
+
+                <PropertyInput
+                  onChange={ this.handleInput }
+                  name="address.street"
+                  value={ property.address.street }
+                  required>
+                  Calle
+                </PropertyInput>
+                <PropertyInput onChange={ this.handleInput } name="address.number" value={ property.address.number } type="text" required>Número</PropertyInput>
+                <PropertyInput onChange={ this.handleInput } name="address.suburb" value={ property.address.suburb } type="text" required>Colonia</PropertyInput>
+                <PropertyInput onChange={ this.handleInput } name="address.city" value={ property.address.city } type="text" required>Ciudad</PropertyInput>
+                <PropertyInput onChange={ this.handleInput } name="address.zipCode" value={ property.address.zipCode } type="number" required>Código Postal</PropertyInput>
+
                 <div className="form-group has-feedback">
                   <label className="control-label col-lg-3">Coordenadas en el Mapa <span className="text-danger">*</span></label>
                   <div className="col-lg-9">
-                    <input type="text" name="with_icon" className="form-control" required="required" placeholder="ejemplo: 19.4236788,-99.1741247"/>
+                    <input type="text" name="address.coordinates"
+                      value={ property.address.coordinates }
+                      onChange={ this.handleInput }
+                      className="form-control" required
+                      placeholder="ejemplo: 19.4236788,-99.1741247"/>
                     <div className="form-control-feedback">
                       <i className="icon-pin"></i>
                     </div>
                   </div>
                 </div>
+
                 <div className="form-group">
                   <label className="control-label col-lg-3">Elegir el Desarrollador <span className="text-danger">*</span></label>
                   <div className="col-lg-9">
-                    <select className="selectpicker" data-show-subtext="true" data-live-search="true" required="required">
-                      <option data-subtext="Rep California">Tom Foolery</option>
-                      <option data-subtext="Sen California">Bill Gordon</option>
-                      <option data-subtext="Sen Massacusetts">Elizabeth Warren</option>
-                      <option data-subtext="Rep Alabama">Mario Flores</option>
-                      <option data-subtext="Rep Alaska">Don Young</option>
-                      <option data-subtext="Rep California" disabled="disabled">Marvin Martinez</option>
-                     </select>
+                    <select name="idBuilder"
+                      onChange={ this.handleInput } value={ property.idBuilder }>
+                      <option value="" disabled>Desarrollador</option>
+                      { this.state.builders.map( e => <option key={ e._id } value={ e._id }>{ e.name }</option> ) }
+                    </select>
+                    {/* <select className="selectpicker" data-show-subtext="true" data-live-search="true" required="required">
+                     </select> */}
                   </div>
                 </div>
+              </PropertyFieldset>
 
+              <PropertyFieldset title="Información Fichas Técnicas">
+                <PropertyInput onChange={ this.handleInput } type="number"
+                  name="dataSheet.investAmount" value={ property.dataSheet.investAmount } required>Monto a Invertir</PropertyInput>
+                <PropertyInput onChange={ this.handleInput } type="number"
+                  name="dataSheet.estimatedTerm" value={ property.dataSheet.estimatedTerm } required
+                  group="Meses">Plazo Estimado</PropertyInput>
+                  <PropertyInput onChange={ this.handleInput } type="number"
+                    name="dataSheet.totalShares" value={ property.dataSheet.totalShares } required>Total de Participaciones</PropertyInput>
+                  <PropertyInput onChange={ this.handleInput } type="number"
+                    name="dataSheet.sharesSold" value={ property.dataSheet.sharesSold }
+                    required placeholder="0">Participaciones Vendidas</PropertyInput>
+              </PropertyFieldset>
 
-                <legend className="text-bold">Información Fichas Técnicas</legend>
+              <PropertyFieldset title="Estudio de Mercado">
+                <PropertyInput onChange={ this.handleInput }
+                  value={ property.marketResearch.totalCost } type="number" name="marketResearch.totalCost"
+                  group="$" required>Costo Total</PropertyInput>
+                <PropertyInput onChange={ this.handleInput }
+                  value={ property.marketResearch.salePrice } type="number" name="marketResearch.salePrice"
+                  group="$" required>Precio Estimado de Venta</PropertyInput>
+                <PropertyInput onChange={ this.handleInput }
+                  value={ property.marketResearch.salesCommission } type="number" name="marketResearch.salesCommission"
+                  group="%" required>Comisión por Venta</PropertyInput>
+                <PropertyInput onChange={ this.handleInput }
+                  value={ property.marketResearch.utility } type="number" name="marketResearch.utility"
+                  group="%" required>Utilidad</PropertyInput>
+                <PropertyInput onChange={ this.handleInput }
+                  value={ property.marketResearch.estimatedTime } type="number" name="marketResearch.estimatedTime"
+                  group="Meses" required>Tiempo Estimado</PropertyInput>
+                <PropertyInput onChange={ this.handleInput }
+                  value={ property.marketResearch.yieldInTime } type="number" name="marketResearch.yieldInTime"
+                  group="%" required>Rendimiento en Tiempo Estimado</PropertyInput>
+                <PropertyInput onChange={ this.handleInput }
+                  value={ property.marketResearch.annualYield } type="number" name="marketResearch.annualYield"
+                  group="%" required>Rendimiento Anualizado</PropertyInput>
+              </PropertyFieldset>
 
-                <div className="form-group">
-                  <label className="control-label col-lg-3">Monto a Invertir <span className="text-danger">*</span></label>
-                  <div className="col-lg-9">
-                    <input type="text" name="digits" className="form-control" required="required" placeholder=""/>
-                  </div>
-                </div>
+              <PropertyFieldset title="Datos Fijos">
+                <PropertyInput onChange={ this.handleInput } type="number" name="fixedData.objectiveFundraising"
+                  group="$" required>Objetivo de Captación</PropertyInput>
+                <PropertyInput onChange={ this.handleInput } type="number" name="fixedData.expectedAnnualYield"
+                  group="%" required>Rendimiento Anual Estimado</PropertyInput>
+                <PropertyInput onChange={ this.handleInput } type="number" name="fixedData.expectedUtility"
+                  group="%" required>Utilidad Esperada</PropertyInput>
+              </PropertyFieldset>
 
-                <div className="form-group">
-                  <label className="control-label col-lg-3">Plazo Estimado <span className="text-danger">*</span></label>
-                  <div className="col-lg-9">
-                    <div className="input-group">
-                      <div className="input-group-addon">Meses</div>
-                      <input type="text" name="digits" className="form-control" required="required" placeholder="" aria-required="true"/>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="form-group">
-                  <label className="control-label col-lg-3">Total de Participaciones <span className="text-danger">*</span></label>
-                  <div className="col-lg-9">
-                    <input type="text" name="digits" className="form-control" required="required" placeholder=""/>
-                  </div>
-                </div>
-
-                <div className="form-group">
-                  <label className="control-label col-lg-3">Participaciones Vendidas <span className="text-danger">*</span></label>
-                  <div className="col-lg-9">
-                    <input type="text" name="digits" className="form-control" required="required" placeholder="0"/>
-                  </div>
-                </div>
-
-
-                <legend className="text-bold">Estudio de Mercado</legend>
-                <div className="form-group">
-                  <label className="control-label col-lg-3">Costo Total <span className="text-danger">*</span></label>
-                  <div className="col-lg-9">
-                    <input type="text" name="digits" className="form-control" required="required" placeholder=""/>
-                  </div>
-                </div>
-
-                <div className="form-group">
-                  <label className="control-label col-lg-3">Precio Estimado de Venta <span className="text-danger">*</span></label>
-                  <div className="col-lg-9">
-                    <input type="text" name="digits" className="form-control" required="required" placeholder=""/>
-                  </div>
-                </div>
-
-                <div className="form-group">
-                  <label className="control-label col-lg-3">Comisión por Venta <span className="text-danger">*</span></label>
-                  <div className="col-lg-9">
-                    <div className="input-group">
-                      <input type="text" name="touchspin" required="required" className="touchspin-postfix" placeholder="Not valid if empty"/>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="form-group">
-                  <label className="control-label col-lg-3">Utilidad <span className="text-danger">*</span></label>
-                  <div className="col-lg-9">
-                    <div className="input-group">
-                      <input type="text" name="touchspin" required="required" className="touchspin-postfix" placeholder="Not valid if empty"/>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="form-group">
-                  <label className="control-label col-lg-3">Tiempo Estimado <span className="text-danger">*</span></label>
-                  <div className="col-lg-9">
-                    <div className="input-group">
-                      <div className="input-group-addon">Meses</div>
-                      <input type="text" name="digits" className="form-control" required="required" placeholder="" aria-required="true"/>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="form-group">
-                  <label className="control-label col-lg-3">Rendimiento en Tiempo Estimado <span className="text-danger">*</span></label>
-                  <div className="col-lg-9">
-                    <div className="input-group">
-                      <input type="text" name="touchspin" required="required" className="touchspin-postfix" placeholder="Not valid if empty"/>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="form-group">
-                  <label className="control-label col-lg-3">Rendimiento Anualizado <span className="text-danger">*</span></label>
-                  <div className="col-lg-9">
-                    <div className="input-group">
-                      <input type="text" name="touchspin" required="required" className="touchspin-postfix" placeholder="Not valid if empty"/>
-                    </div>
-                  </div>
-                </div>
-
-                <legend className="text-bold">Datos Fijos</legend>
-                <div className="form-group">
-                  <label className="control-label col-lg-3">Objetivo de Captación <span className="text-danger">*</span></label>
-                  <div className="col-lg-9">
-                    <input type="text" name="digits" className="form-control" required="required" placeholder=""/>
-                  </div>
-                </div>
-
-                <div className="form-group">
-                  <label className="control-label col-lg-3">Rendimiento Anual Estimado <span className="text-danger">*</span></label>
-                  <div className="col-lg-9">
-                    <div className="input-group">
-                      <input type="text" name="touchspin" required="required" className="touchspin-postfix" placeholder="Not valid if empty"/>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="form-group">
-                  <label className="control-label col-lg-3">Utilidad Esperada <span className="text-danger">*</span></label>
-                  <div className="col-lg-9">
-                    <div className="input-group">
-                      <input type="text" name="touchspin" required="required" className="touchspin-postfix" placeholder="Not valid if empty"/>
-                    </div>
-                  </div>
-                </div>
-
+              <fieldset className="content-group">
 
                 <legend className="text-bold">Corrida Financiera</legend>
                 <div className="form-group">
@@ -235,12 +249,10 @@ class NewProperty extends Component {
                     </table>
                   </div>
                 </div>
-
-
               </fieldset>
 
               <div className="text-right">
-                <button type="reset" className="btn btn-default" id="reset">Limpiar <i className="icon-reload-alt position-right"></i></button>
+                {/* <button type="reset" className="btn btn-default" id="reset">Limpiar <i className="icon-reload-alt position-right"></i></button> */}
                 <button type="submit" className="btn btn-primary">Crear Propiedad <i className="icon-arrow-right14 position-right"></i></button>
               </div>
             </form>

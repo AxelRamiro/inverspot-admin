@@ -8,7 +8,12 @@ class BuilderNew extends Component {
     this.handleInput = this.handleInput.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.state = {
-      builder: {}
+      builder: {
+        name: '',
+        yearsWork: '',
+        completedWorks: '',
+        website: ''
+      }
     }
   }
 
@@ -82,7 +87,7 @@ class BuilderNew extends Component {
 
               <div className="text-right">
                 <button type="submit" className="btn btn-primary">
-                  { this.props.route.path === 'new' ? 'Crear Desarrollador' : 'Actualizar Desarrollador' } 
+                  { this.props.route.path === 'new' ? 'Crear Desarrollador' : 'Actualizar Desarrollador' }
                   <i className="icon-arrow-right14 position-right"></i></button>
               </div>
             </form>

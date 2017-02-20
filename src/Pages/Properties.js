@@ -1,27 +1,49 @@
 import React, { Component } from 'react'
 import Filterbar from '../Components/Filterbar'
 import Propertycard from '../Components/Propertycard'
-import Pagination from '../Components/Pagination'
-import Filterby from '../Components/Filterby'
-
+import { list } from '../Services/property'
 
 class Properties extends Component {
+
+  constructor(props) {
+    super(props)
+    this.onRemoveItem = this.onRemoveItem.bind(this)
+    this.state = {
+      properties: []
+    }
+  }
+
+  componentDidMount() {
+    list({},{},'')
+      .then( properties => this.setState({ properties }) )
+  }
+
+  onRemoveItem( property ) {
+    let copy = this.state.properties.slice()
+    let index = copy.findIndex( e => e._id === property._id )
+    copy.splice(index, 1)
+    this.setState({
+      properties: copy
+    })
+  }
+
   render() {
+    let filters = [
+      {
+        name: 'Disponible',
+        value: 'no'
+      },
+      {
+        name: 'Fondeada',
+        value: 'funded'
+      },
+    ]
     return (
       <div className="content">
-        <Filterbar nameFilter='Busqueda de Propiedades'>
-          <Filterby>
-            <li><a href="#"><i className="icon-file-check"></i> Disponible</a></li>
-            <li><a href="#"><i className="icon-file-stats"></i> Fondeada</a></li>
-          </Filterby>
-        </Filterbar>
+        <Filterbar nameFilter='Busqueda de Propiedades' filters={ filters } />
         <div className="row">
-        { ['1', '2', '3'].map(( e, i ) => <Propertycard key={e} name={e} /> ) }
-          <Propertycard />
-          <Propertycard />
-          <Propertycard />
+        { this.state.properties.map(( e, i ) => <Propertycard onRemove={ this.onRemoveItem } key={e._id} property={e} /> ) }
         </div>
-        <Pagination />
       </div>
     )
   }

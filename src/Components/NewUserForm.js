@@ -78,7 +78,7 @@ class NewUserForm extends Component{
                     <label>Estado</label>
                     <select name="state" className="form-control" required="required"
 											onChange={ this.handleInput } value={ this.state.user.state } >
-                      <option value="na" selected="">Elige</option>
+                      <option value="na" disabled>Elige</option>
                       <option value="Agu">Aguascalientes</option>
                       <option value="Bc">Baja California</option>
                       <option value="Bcs">Baja California Sur</option>
@@ -140,10 +140,12 @@ class NewUserForm extends Component{
                 <div className="row">
                   <div className="col-md-6">
                     <label>Contraseña</label>
-                    <input name="password" type="password" placeholder="" className="form-control" required="required"
-										value={ this.state.user.password } onChange={ this.handleInput }/>
+                    <input
+											name="password" type="text" className="form-control"
+											required={ this.props.path.path !== ":id/edit" }
+											value={ this.state.user.password } onChange={ this.handleInput }/>
                   </div>
-									
+
                   {/*<div className="col-md-6">
                     <label>Repetir Contraseña</label>
                     <input type="password" placeholder="" className="form-control" required="required"/>
@@ -166,4 +168,4 @@ class NewUserForm extends Component{
 	}
 }
 
-export default withRouter( NewUserForm);
+export default withRouter(NewUserForm);

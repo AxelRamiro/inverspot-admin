@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import Filterbar from '../Components/Filterbar'
 //import Filterdate from '../Components/Filterdate'
+import { Link } from 'react-router'
 import BuilderCard from '../Components/builderCard'
 import { list } from '../Services/builder'
 
 function BuilderList(props) {
 
   let filtered = props.builders.filter(builder => {
-    return !(builder.name.indexOf(props.filterText) === -1 || (props.filterTag ))
+    return !(builder.name.toLowerCase().indexOf(props.filterText.toLowerCase()) === -1 )
   })
 
   return (
@@ -59,7 +60,13 @@ class Builders extends Component {
         <div className="row">
           <div className="col-lg-12">
             <div className="panel panel-body">
-              <BuilderList builders={ this.state.builders } filterText={ this.state.filterText } filterTag={ this.state.filterTag } />
+              <BuilderList
+                builders={ this.state.builders }
+                filterText={ this.state.filterText }
+                filterTag={ this.state.filterTag }
+                onRemoveItem={ this.onRemoveItem } />
+                { this.state.builders.length === 0 &&
+                  <h3>No hay desarrolladores. <Link to="/builders/new">Añadir nuevo.</Link></h3> }
             </div>
           </div>
         </div>

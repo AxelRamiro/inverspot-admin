@@ -8,7 +8,7 @@ import { list } from '../Services/user'
 function UsersList(props) {
 
     let filtered = props.users.filter(user => {
-      return !(user.name.indexOf(props.filterText) === -1 || (props.filterTag && props.filterTag !== user.level))
+      return !(user.name.toLowerCase().indexOf(props.filterText.toLowerCase()) === -1 || (props.filterTag && props.filterTag !== user.level))
     })
 
     return (
@@ -55,13 +55,19 @@ class Users extends Component {
     return (
       <div className="content">
 
-        <Filterbar nameFilter='Busqueda de Usuarios'>
+        <Filterbar
+          nameFilter='Busqueda de Usuarios'
+          onFilterChange={ this.filter }>
           {/*<Filterdate />*/}
         </Filterbar>
          <div className="row">
           <div className="col-lg-12">
             <div className="panel panel-body">
-              <UsersList users={ this.state.users } filterText={ this.state.filterText } filterTag={ this.state.filterTag } />
+              <UsersList
+                users={ this.state.users }
+                onRemoveItem={ this.onRemoveItem }
+                filterText={ this.state.filterText }
+                filterTag={ this.state.filterTag } />
               { this.state.users.length === 0 && <h3>No hay usuarios. <Link to="/users/new">Crear nuevo usuario</Link></h3> }
             </div>
           </div>

@@ -2,6 +2,18 @@ import React, { Component } from 'react'
 import { create, list, edit } from '../Services/user'
 import { withRouter } from 'react-router'
 
+function AdminInput(props) {
+  return(
+    <div className="col-md-6">
+      <label>{ props.label } { props.required && <span className="text-danger">*</span>}</label>
+      <input
+        { ...props }
+        type="text"
+        className="form-control" />
+    </div>
+  )
+}
+
 class AdminForm extends Component {
 
   constructor(props) {
@@ -9,7 +21,14 @@ class AdminForm extends Component {
     this.handleInput = this.handleInput.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.state = {
-      user: {}
+      user: {
+        name: '',
+        level: '',
+        email: '',
+        telephone: '',
+        password: '',
+        status: ''
+      }
     }
   }
 
@@ -32,7 +51,7 @@ class AdminForm extends Component {
   handleSubmit(e) {
     e.preventDefault()
     if(this.props.route.path === "new") {
-      create( this.state.user )
+      return create( this.state.user )
       .then( success => success && this.props.router.push('/admin-users/list') )
     }
     edit( this.state.user )
@@ -58,10 +77,9 @@ class AdminForm extends Component {
                       <form onSubmit={ this.handleSubmit }>
                         <div className="form-group">
                           <div className="row">
-                            <div className="col-md-6">
-                              <label>Nombre Completo <span className="text-danger">*</span></label>
-                              <input type="text" name="name" className="form-control" required="required" value={ this.state.user.name } onChange={ this.handleInput }/>
-                            </div>
+                            <AdminInput
+                              label="Nombre Completo" name="name" required
+                              value={ this.state.user.name } onChange={ this.handleInput }  />
                             <div className="col-md-6">
                                <label className="control-label col-lg-3">Tipo de Usuario <span className="text-danger">*</span></label>
                                 <select name="level"
@@ -120,7 +138,9 @@ class AdminForm extends Component {
                         </div>
 
                         <div className="text-right">
-                          <button type="submit" className="btn btn-primary">{ this.props.route.path === 'new' ? 'Crear Administrador' : 'Actualizar Administrador' }<i className="icon-arrow-right14 position-right"></i></button>
+                          <button
+                            type="submit"
+                            className="btn btn-primary">{ this.props.route.path === 'new' ? 'Crear Administrador' : 'Actualizar Administrador' }<i className="icon-arrow-right14 position-right"></i></button>
                         </div>
                       </form>
                     </div>

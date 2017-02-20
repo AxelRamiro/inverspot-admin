@@ -60,12 +60,14 @@ class Filterbar extends Component {
               {this.props.children}
             </div>
 
-            <select name="filterTag" value={ this.state.filterTag }
-              onChange={ this.onFilterChange }>
-              <option value="">Filtar por</option>
-              <option value="admin">Administrador</option>
-              <option value="asesor">Asesor</option>
-            </select>
+            { this.props.filters &&
+              <label htmlFor="filter"> FILTRAR:
+                <select id="filter" name="filterTag" value={ this.state.filterTag }
+                onChange={ this.onFilterChange }>
+                  <option value="">Ninguno</option>
+                  { this.props.filters.map( e => <option key={ e.value } value={ e.value }>{ e.name }</option>) }
+                </select>
+              </label> }
 
           </form>
         </div>

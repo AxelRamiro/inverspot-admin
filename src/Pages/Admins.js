@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import Filterbar from '../Components/Filterbar'
 import Adminresult from '../Components/Adminresult'
-// import Filterby from '../Components/Filterby'
+import { Link } from 'react-router'
 import { list } from '../Services/user'
 
 function PowerUserList(props) {
 
     let filtered = props.powerUsers.filter(user => {
-      return !(user.name.indexOf(props.filterText) === -1 || (props.filterTag && props.filterTag !== user.level))
+      return !(user.name.toLowerCase().indexOf(props.filterText.toLowerCase()) === -1 || (props.filterTag && props.filterTag !== user.level))
     })
 
     return (
@@ -51,10 +51,19 @@ class Admins extends Component {
   }
 
   render() {
+    let filters = [
+      {
+        name: 'Administrador',
+        value: 'admin'
+      },
+      {
+        name: 'Asesor',
+        value: 'asesor'
+      },
+    ]
     return (
       <div className="content">
-
-        <Filterbar nameFilter='Busqueda de Administradores' onFilterChange={ this.filter }>
+        <Filterbar nameFilter='Busqueda de Administradores' onFilterChange={ this.filter } filters={ filters }>
         </Filterbar>
         {/* <Filterby>
           <li><a href="#"><i className="icon-calendar"></i> Fecha de Afiliación</a></li>
@@ -64,7 +73,10 @@ class Admins extends Component {
         <div className="row">
           <div className="col-lg-12">
             <div className="panel panel-body">
-              <PowerUserList powerUsers={ this.state.powerUsers } filterText={ this.state.filterText } filterTag={ this.state.filterTag } />
+              <PowerUserList powerUsers={ this.state.powerUsers } onRemoveItem={ this.onRemoveItem }
+                filterText={ this.state.filterText } filterTag={ this.state.filterTag } />
+              { this.state.powerUsers.length === 0 &&
+                <h3>No hay usuarios. <Link to="/admin-users/new">Crear nuevo.</Link></h3> }
             </div>
           </div>
         </div>
