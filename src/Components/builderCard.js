@@ -2,16 +2,31 @@ import React, { Component } from 'react'
 import { Link } from 'react-router'
 import { remove } from '../Services/builder'
 import Swal from 'react-swal'
+import { list } from '../Services/property'
 
-class Rows extends Component {
-  render() {
-    return (
-      <tr>
-        <td>Departamento Col. Doctores</td>
-        <td><span className="label label-success">Disponible</span></td>
-      </tr>
-    )
-  }
+function Row(props) {
+  return (
+    <tr>
+      <td>{ props.title }</td>
+      <td><span className="label label-success">{ props.status }</span></td>
+    </tr>
+  )
+}
+
+function PropertyTable(props) {
+  return (
+    <table className="table datatable-basic">
+      <thead>
+        <tr>
+          <th>Propiedad</th>
+          <th>Estatus</th>
+        </tr>
+      </thead>
+      <tbody>
+        { props.items.map( e => <Row title={e.title} status={e.status}/> ) }
+      </tbody>
+    </table>
+  )
 }
 
 class builderCard extends Component {
@@ -21,8 +36,14 @@ class builderCard extends Component {
     this.deleteBuilder = this.deleteBuilder.bind(this)
     this.state = {
       showConfirm: false,
-      callback: () => null
+      callback: () => null,
+      properties: []
     }
+  }
+
+  componentDidMount() {
+    list({builder: this.props.builder._id},{},'title status')
+      .then( properties => this.setState({ properties }) )
   }
 
   deleteBuilder() {
@@ -74,7 +95,7 @@ class builderCard extends Component {
               </li>
             </ul>
           </div>
-
+          { this.state.properties.length > 0 &&
           <div className="panel border-purple-400">
             <div className="panel-heading bg-purple-400">
               <h5 className="panel-title">Proyectos en Inverspot</h5>
@@ -85,22 +106,8 @@ class builderCard extends Component {
                 </ul>
               </div>
             </div>
-
-            <table className="table datatable-basic">
-              <thead>
-                <tr>
-                  <th>Propiedad</th>
-                  <th>Estatus</th>
-                </tr>
-              </thead>
-              <tbody>
-
-                <Rows />
-                <Rows/>
-
-              </tbody>
-            </table>
-          </div>
+          </div> }
+          { this.state.properties.length > 0 && <PropertyTable items={ this.state.properties } /> }
         </li>
         <hr/>
       </div>

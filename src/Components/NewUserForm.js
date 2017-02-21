@@ -9,7 +9,14 @@ class NewUserForm extends Component{
 		this.handleInput = this.handleInput.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.state = {
-			user: {}
+			user: {
+				name: '',
+				email: '',
+				state: '',
+				telephone: '',
+				status: '',
+				password: ''
+			}
 		}
 
 	}
@@ -17,7 +24,11 @@ class NewUserForm extends Component{
 	componentDidMount() {
 		if(this.props.params.id) {
 			list({_id: this.props.params.id},{}, 'name email state telephone status')
-				.then( user => this.setState({user: user[0]}) )
+				.then(user => {
+					user = user[0]
+					user.password = ''
+					this.setState({ user })
+				})
 				.catch(alert)
 		}
 	}
@@ -34,10 +45,9 @@ class NewUserForm extends Component{
     e.preventDefault()
 
     if(this.props.path.path === "new") {
-			let newState = Object.assign( this.state )
-			newState.user['level'] = 'user'
-			this.setState(newState)
-      create( this.state.user )
+			let newUser = Object.assign( this.state.user )
+			newUser['level'] = 'user'
+      create( newUser )
       .then( success => success && this.props.router.push('/users/list') )
     }
     edit( this.state.user )

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { create, edit, list } from '../Services/user'
+import { edit, list } from '../Services/user'
 import { withRouter } from 'react-router'
 
 function InputForm (props){

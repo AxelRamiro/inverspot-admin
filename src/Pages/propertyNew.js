@@ -49,7 +49,7 @@ class NewProperty extends Component {
             zipCode: 0,
             coordinates: ""
         },
-        idBuilder: "",
+        builder: "",
         dataSheet: {
             investAmount: 0,
             estimatedTerm: 0,
@@ -164,8 +164,8 @@ class NewProperty extends Component {
                 <div className="form-group">
                   <label className="control-label col-lg-3">Elegir el Desarrollador <span className="text-danger">*</span></label>
                   <div className="col-lg-9">
-                    <select name="idBuilder"
-                      onChange={ this.handleInput } value={ property.idBuilder }>
+                    <select name="builder"
+                      onChange={ this.handleInput } value={ property.builder }>
                       <option value="" disabled>Desarrollador</option>
                       { this.state.builders.map( e => <option key={ e._id } value={ e._id }>{ e.name }</option> ) }
                     </select>

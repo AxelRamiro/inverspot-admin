@@ -28,8 +28,11 @@ class InvestmentNew extends Component {
     propertyList({}, {sort:'title'},'title dataSheet')
       .then( properties => this.setState({ properties }) )
     if(this.props.params.id) {
-      list({_id: this.props.params.id},{}, 'investor property sharesNumber')
-        .then( investment => this.setState({investment: investment[0]}) )
+      list({_id: this.props.params.id},{}, 'investor property sharesNumber amount')
+        .then( investment => {
+          investment = investment[0]
+          this.setState({ investment, multiplier: (investment.amount / investment.sharesNumber) })
+        } )
         .catch(alert)
     }
   }
@@ -45,6 +48,8 @@ class InvestmentNew extends Component {
         break;
       case 'sharesNumber':
         newState.investment['amount'] = value * this.state.multiplier
+        break;
+      default:
         break;
     }
     newState.investment[name] = value
@@ -110,7 +115,7 @@ class InvestmentNew extends Component {
                               <input disabled={ !this.state.multiplier } type="number" name="sharesNumber" className="form-control" required="required"
                                 onChange={ this.handleInput } value={ investment.sharesNumber }/>
                             </div>
-                            <span>{ this.state.investment.amount }</span>
+                            <span>{ this.state.investment.sharesNumber * this.state.multiplier }</span>
                           </div>
                         </div>
 

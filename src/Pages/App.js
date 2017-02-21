@@ -6,10 +6,6 @@ import Headernav from '../Components/Headernav'
 
 class Layout extends Component {
 
-  constructor(props) {
-    super(props)
-  }
-
   componentWillMount() {
     this.user = JSON.parse(localStorage.getItem('my'))
   }
