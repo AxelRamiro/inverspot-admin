@@ -61,7 +61,7 @@ class investors extends Component {
 
     return (
       <div className="content">
-        <Filterbar nameFilter='Busqueda de Inversores'  onFilterChange={ this.filter } >
+        <Filterbar nameFilter='Búsqueda de Inversores'  onFilterChange={ this.filter } >
         </Filterbar>
 
         <div className="panel panel-body">

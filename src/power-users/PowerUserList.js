@@ -63,7 +63,7 @@ class PowerUsers extends Component {
     ]
     return (
       <div className="content">
-        <Filterbar nameFilter='Busqueda de Administradores' onFilterChange={ this.filter } filters={ filters }>
+        <Filterbar nameFilter='Búsqueda de Administradores' onFilterChange={ this.filter } filters={ filters }>
         </Filterbar>
         {/* <Filterby>
           <li><a href="#"><i className="icon-calendar"></i> Fecha de Afiliación</a></li>

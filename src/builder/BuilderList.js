@@ -54,7 +54,7 @@ class Builders extends Component {
   render() {
     return (
       <div className="content">
-        <Filterbar nameFilter='Busqueda de Desarrolladores'  onFilterChange={ this.filter }>
+        <Filterbar nameFilter='Búsqueda de Desarrolladores'  onFilterChange={ this.filter }>
         </Filterbar>
 
         <div className="row">

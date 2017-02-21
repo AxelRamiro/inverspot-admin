@@ -4,7 +4,7 @@ import { Link } from "react-router"
 function NavLink( props ) {
   return (
     <li>
-      <Link to={ `/${props.root}/list` } activeStyle={{ backgroundColor: '#26a69a' }}>
+      <Link to={ `/${props.root}/list` } activeClassName="active">
         <i className={ props.icon }></i> <span>{ props.name }</span>
       </Link>
       <ul>

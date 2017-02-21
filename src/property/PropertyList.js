@@ -3,13 +3,28 @@ import Filterbar from '../components/Filterbar'
 import Property from './Property'
 import { list } from '../Services/property'
 
-class PropertyList extends Component {
+function PropertyList(props) {
+  let filtered = props.properties.filter(property => {
+    console.log(property.title);
+    return !(property.title.toLowerCase().indexOf(props.filterText.toLowerCase()) === -1 || (props.filterTag && props.filterTag !== property.status))
+  })
+  return (
+    <div className="row">
+      { filtered.map(e => <Property onRemove={ props.onRemoveItem } key={e._id} property={e} /> ) }
+    </div>
+  )
+}
+
+class Properties extends Component {
 
   constructor(props) {
     super(props)
     this.onRemoveItem = this.onRemoveItem.bind(this)
+    this.filter = this.filter.bind(this)
     this.state = {
-      properties: []
+      properties: [],
+      filterText: '',
+      filterTag:''
     }
   }
 
@@ -27,26 +42,29 @@ class PropertyList extends Component {
     })
   }
 
+  filter(filters) {
+    this.setState(filters)
+  }
+
   render() {
     let filters = [
       {
         name: 'Disponible',
-        value: 'no'
+        value: 'available'
       },
       {
         name: 'Fondeada',
-        value: 'funded'
+        value: 'fund'
       },
     ]
     return (
       <div className="content">
-        <Filterbar nameFilter='Busqueda de Propiedades' filters={ filters } />
-        <div className="row">
-        { this.state.properties.map(( e, i ) => <Property onRemove={ this.onRemoveItem } key={e._id} property={e} /> ) }
-        </div>
+        <Filterbar nameFilter='Búsqueda de Propiedades' onFilterChange={ this.filter } filters={ filters } />
+        <PropertyList properties={ this.state.properties } onRemoveItem={ this.onRemoveItem }
+          filterText={ this.state.filterText } filterTag={ this.state.filterTag } />
       </div>
     )
   }
 }
 
-export default PropertyList;
+export default Properties;

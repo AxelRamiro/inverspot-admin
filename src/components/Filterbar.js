@@ -50,10 +50,9 @@ class Filterbar extends Component {
                   <i className="icon-search4 text-muted text-size-base"></i>
                 </div>
               </div>
-
-              {/* <div className="input-group-btn">
+              <div className="input-group-btn">
                 <button type="submit" className="btn btn-primary btn-xlg">Buscar</button>
-              </div> */}
+              </div>
             </div>
 
             <div className="row search-option-buttons">
@@ -62,9 +61,9 @@ class Filterbar extends Component {
 
             { this.props.filters &&
               <label htmlFor="filter"> FILTRAR:
-                <select id="filter" name="filterTag" value={ this.state.filterTag }
+                <select className="form-control" id="filter" name="filterTag" value={ this.state.filterTag }
                 onChange={ this.onFilterChange }>
-                  <option value="">Ninguno</option>
+                  <option value="">Todo</option>
                   { this.props.filters.map( e => <option key={ e.value } value={ e.value }>{ e.name }</option>) }
                 </select>
               </label> }

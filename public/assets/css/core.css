@@ -3260,8 +3260,8 @@ li + .dropdown-header.highlight,
   padding-bottom: 88px;
 }
 .navbar-brand > img {
-  margin-top: 2px;
-  height: 16px;
+  margin-top: 0px;
+  height: 32px;
 }
 .navbar-nav {
   margin: 0;
@@ -3929,7 +3929,7 @@ ul.dropdown-menu .dropdown-content-heading:first-child {
 .menu-list li.active > a:hover,
 .menu-list li.active > a:focus {
   color: #fff;
-  background-color: #2196F3;
+  background-color: #5e35b1;
 }
 .menu-list li.disabled > a,
 .menu-list li.disabled > a:hover,

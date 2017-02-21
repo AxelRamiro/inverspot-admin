@@ -56,7 +56,7 @@ class Users extends Component {
       <div className="content">
 
         <Filterbar
-          nameFilter='Busqueda de Usuarios'
+          nameFilter='Búsqueda de Usuarios'
           onFilterChange={ this.filter }>
           {/*<Filterdate />*/}
         </Filterbar>
