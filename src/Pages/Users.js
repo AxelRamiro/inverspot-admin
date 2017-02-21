@@ -42,7 +42,7 @@ class Users extends Component {
   }
 
   componentDidMount() {
-    list({level:{ $in: ['user', 'inversor'] }}, {sort:'name'}, 'name email state status telephone level createdAt')
+    list({level:{ $in: ['user', 'investor'] }}, {sort:'name'}, 'name email state status telephone level createdAt')
       .then( users => this.setState({users, filtered: users}) )
       .catch( e => alert(e) )
   }

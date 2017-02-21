@@ -1,14 +1,54 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router'
+import { remove } from '../Services/user'
+import Swal from 'react-swal'
+import moment from 'moment'
 
 class investmentRows extends Component {
+
+  constructor(props) {
+    super(props)
+    this.deleteInvestment = this.deleteInvestment.bind(this)
+    this.state = {
+      showConfirm: false,
+      callback: () => null
+    }
+  }
+
+  deleteInvestment() {
+    this.setState({
+      showConfirm: true,
+      callback: confirm => {
+        confirm && remove(this.props.investment._id)
+          .then(removedInvestment => this.props.onRemove( removedInvestment ))
+          .catch(alert)
+      }
+    })
+  }
+
   render() {
     return (
       <tr>
-        <td><h6 className="media-heading"><a href="#">{this.props.name}</a></h6></td>
-        <td>12</td>
-        <td>$100,000</td>
-        <td>Departamento Col. Doctores</td>
-        <td>14/02/2016</td>
+        <Swal
+          title="Eliminar usuario"
+          text={ `¿Está seguro que desea eliminar la inversion del usuario ${ this.props.investment.investor.name }?` }
+          confirmButtonText="Sí, eliminar"
+          confirmButtonColor="#f44336"
+          cancelButtonText="Cancelar"
+          type="error"
+          isOpen={ this.state.showConfirm || false }
+          callback={ this.state.callback || null } />
+        <td>
+          <h6 className="media-heading">
+            <Link to={`investments/${this.props.investment._id}/edit`}>
+              {this.props.investment.investor.name}
+            </Link>
+          </h6>
+        </td>
+        <td>{this.props.investment.sharesNumber}</td>
+        <td>{this.props.investment.amount}</td>
+        <td>{this.props.investment.property.title}</td>
+        <td>{ moment(this.props.investment.createdAt).format('LL') }</td>
         <td className="text-center">
             <ul className="icons-list">
                 <li className="dropdown">
@@ -16,7 +56,19 @@ class investmentRows extends Component {
                         <i className="icon-menu9"></i>
                     </a>
                     <ul className="dropdown-menu dropdown-menu-right">
-                        <li><a href="#"><i className="icon-cross2 text-danger" id="sweet_combine"></i> Eliminar</a></li>
+                      <li>
+                      <Link to={`investments/${this.props.investment._id}/edit`}>
+                        <i className="icon-cog pull-left"></i> Editar Inversion
+                      </Link>
+                      </li>
+                      <li className="divider">
+                      </li>
+                      <li onClick={ this.deleteUser }>
+                        <a>
+                          <i className="icon-cross2 text-danger" id="sweet_combine"></i>
+                           Eliminar
+                         </a>
+                       </li>
                     </ul>
                 </li>
             </ul>
