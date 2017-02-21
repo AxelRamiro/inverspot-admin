@@ -5,18 +5,27 @@ import Footer from '../Components/Footer'
 import Headernav from '../Components/Headernav'
 
 class Layout extends Component {
+
+  constructor(props) {
+    super(props)
+  }
+
+  componentWillMount() {
+    this.user = JSON.parse(localStorage.getItem('my'))
+  }
+
   render() {
     const containerStyle = {
       padding: "0 20px"
     }
     return (
       <div>
-        <Nav />
+        <Nav user={ this.user } />
         <div className="page-container">
           <div className="page-content">
-            <Sidebar/>
+            <Sidebar user={ this.user } />
             <div className="content-wrapper">
-              <Headernav headerNav={'Todas las Propiedades'}/>
+              <Headernav headerNav={'Todas las Propiedades'} />
               {this.props.children}
               <div style={containerStyle}>
                 <Footer />

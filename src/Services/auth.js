@@ -5,8 +5,8 @@ function getToken() {
   return localStorage.getItem(TOKEN)
 }
 
-function saveToken( token ) {
-  return localStorage.setItem(TOKEN, token)
+function save( key, val ) {
+  return localStorage.setItem(key, val)
 }
 
 function requestAccess(email, password) {
@@ -22,7 +22,8 @@ function requestAccess(email, password) {
     .then( res => {
       if (res.ok) {
         return res.json().then(data => {
-          saveToken(data.token)
+          save(TOKEN, data.token)
+          save('my', JSON.stringify(data.user))
           return true
         })
       }
@@ -39,6 +40,7 @@ function login(email, pass) {
 
 function logout(cb) {
   localStorage.removeItem(TOKEN)
+  localStorage.removeItem('my')
   cb(true)
 }
 

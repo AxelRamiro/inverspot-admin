@@ -44,7 +44,7 @@ class Nav extends Component {
             <li className="dropdown dropdown-user">
               <a className="dropdown-toggle" data-toggle="dropdown">
                 <img src="assets/images/placeholder.jpg" alt=""/>
-                <span>John Doe</span>
+                <span>{ this.props.user.name }</span>
                 <i className="caret"></i>
               </a>
 

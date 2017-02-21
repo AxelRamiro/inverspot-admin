@@ -34,9 +34,9 @@ class Sidebar extends Component {
               <div className="media">
                 <a href="#" className="media-left"><img src="assets/images/placeholder.jpg" className="img-circle img-sm" alt=""/></a>
                 <div className="media-body">
-                  <span className="media-heading text-semibold">John Doe</span>
+                  <span className="media-heading text-semibold">{ this.props.user.name }</span>
                   <div className="text-size-mini text-muted">
-                    <i className="icon-user text-size-small"></i> &nbsp;Admin
+                    <i className="icon-user text-size-small"></i> &nbsp;{ this.props.user.level }
                   </div>
                 </div>
 
