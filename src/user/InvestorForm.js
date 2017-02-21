@@ -13,7 +13,7 @@ function InputForm (props){
   )
 }
 
-class InvestmentForm extends Component{
+class InvestorForm extends Component{
 
   constructor(props) {
     super(props)
@@ -347,4 +347,4 @@ class InvestmentForm extends Component{
 	}
 }
 
-export default withRouter( InvestmentForm);
+export default withRouter(InvestorForm);

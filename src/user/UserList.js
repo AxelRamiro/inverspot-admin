@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import Filterbar from '../Components/Filterbar'
-//import Filterdate from '../Components/Filterdate'
-import Resultuser from '../Components/Resultuser'
+import Filterbar from '../components/Filterbar'
+//import Filterdate from '../components/Filterdate'
+import User from './User'
 import { Link } from 'react-router'
 import { list } from '../Services/user'
 
-function UsersList(props) {
+function UserList(props) {
 
     let filtered = props.users.filter(user => {
       return !(user.name.toLowerCase().indexOf(props.filterText.toLowerCase()) === -1 || (props.filterTag && props.filterTag !== user.level))
@@ -13,7 +13,7 @@ function UsersList(props) {
 
     return (
       <ul className="media-list search-results-list content-group">
-        {filtered.map(user => (<Resultuser key={user._id} user={user} onRemove={ props.onRemoveItem } />) )}
+        {filtered.map(user => (<User key={user._id} user={user} onRemove={ props.onRemoveItem } />) )}
       </ul>
     )
 
@@ -63,7 +63,7 @@ class Users extends Component {
          <div className="row">
           <div className="col-lg-12">
             <div className="panel panel-body">
-              <UsersList
+              <UserList
                 users={ this.state.users }
                 onRemoveItem={ this.onRemoveItem }
                 filterText={ this.state.filterText }

@@ -29,7 +29,7 @@ function PropertyTable(props) {
   )
 }
 
-class builderCard extends Component {
+class Builder extends Component {
 
   constructor(props) {
     super(props)
@@ -115,4 +115,4 @@ class builderCard extends Component {
   }
 }
 
-export default builderCard;
+export default Builder;

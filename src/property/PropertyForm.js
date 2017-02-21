@@ -30,7 +30,7 @@ function PropertyInput(props) {
   )
 }
 
-class NewProperty extends Component {
+class PropertyForm extends Component {
 
   constructor(props) {
     super(props)
@@ -264,4 +264,4 @@ class NewProperty extends Component {
   }
 }
 
-export default NewProperty;
+export default PropertyForm;

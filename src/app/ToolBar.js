@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link, withRouter } from "react-router"
 import { logout } from '../Services/auth'
 
-class Nav extends Component {
+class ToolBar extends Component {
 
   constructor(props) {
     super(props)
@@ -49,7 +49,7 @@ class Nav extends Component {
               </a>
 
               <ul className="dropdown-menu dropdown-menu-right">
-                <li><a href="#"><i className="icon-user-plus"></i> Mi Perfil</a></li>
+                <li><Link to={`/power-users/${this.props.user._id}/edit`}><i className="icon-user-plus"></i> Mi Perfil</Link></li>
                 <li className="divider"></li>
                 <li><a href="#"><i className="icon-cog5"></i> Configuración</a></li>
                 <li><a href="#" onClick={ this.closeSession }><i className="icon-switch2"></i> Salir</a></li>
@@ -62,4 +62,4 @@ class Nav extends Component {
   }
 }
 
-export default withRouter(Nav);
+export default withRouter(ToolBar);

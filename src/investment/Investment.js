@@ -4,7 +4,7 @@ import { remove } from '../Services/user'
 import Swal from 'react-swal'
 import moment from 'moment'
 
-class investmentRows extends Component {
+class Investment extends Component {
 
   constructor(props) {
     super(props)
@@ -78,4 +78,4 @@ class investmentRows extends Component {
   }
 }
 
-export default investmentRows;
+export default Investment;

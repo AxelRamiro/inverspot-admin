@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import Nav from '../Components/Nav'
-import Sidebar from '../Components/Sidebar'
-import Footer from '../Components/Footer'
-import Headernav from '../Components/Headernav'
+import ToolBar from './ToolBar'
+import Sidebar from './Sidebar'
+import Footer from './Footer'
+import Nav from './Nav'
 
-class Layout extends Component {
+class App extends Component {
 
   componentWillMount() {
     this.user = JSON.parse(localStorage.getItem('my'))
@@ -16,12 +16,12 @@ class Layout extends Component {
     }
     return (
       <div>
-        <Nav user={ this.user } />
+        <ToolBar user={ this.user } />
         <div className="page-container">
           <div className="page-content">
             <Sidebar user={ this.user } />
             <div className="content-wrapper">
-              <Headernav headerNav={'Todas las Propiedades'} />
+              <Nav breadcrumbs={ this.props.location.pathname } />
               {this.props.children}
               <div style={containerStyle}>
                 <Footer />
@@ -34,4 +34,4 @@ class Layout extends Component {
   }
 }
 
-export default Layout;
+export default App;

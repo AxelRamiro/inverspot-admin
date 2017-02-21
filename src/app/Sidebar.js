@@ -43,7 +43,7 @@ class Sidebar extends Component {
                 <div className="media-right media-middle">
                   <ul className="icons-list">
                     <li>
-                      <a href="#"><i className="icon-cog3"></i></a>
+                      <Link to={ `/power-users/${this.props.user._id}/edit` }><i className="icon-cog3"></i></Link>
                     </li>
                   </ul>
                 </div>
@@ -56,7 +56,7 @@ class Sidebar extends Component {
               <ul className="navigation navigation-main navigation-accordion">
 
                 <li className="navigation-header"><span>Panel Principal</span> <i className="icon-menu" title="Main pages"></i></li>
-                <NavLink root="admin-users" name="Administradores" icon="icon-stack2" />
+                <NavLink root="power-users" name="Administradores" icon="icon-stack2" />
                 <NavLink root="properties" name="Propiedades" icon="icon-copy" />
                 <NavLink root="users" name="Usuarios" icon="icon-droplet2" />
                 <NavLink root="investments" name="Inversiones" icon="icon-stack" />

@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { create, edit, list } from '../Services/user'
 import { withRouter } from 'react-router'
 
-class NewUserForm extends Component{
+class UserEdit extends Component{
 
 	constructor(props) {
 		super(props)
@@ -89,38 +89,38 @@ class NewUserForm extends Component{
                     <select name="state" className="form-control" required="required"
 											onChange={ this.handleInput } value={ this.state.user.state } >
                       <option value="na" disabled>Elige</option>
-                      <option value="Agu">Aguascalientes</option>
-                      <option value="Bc">Baja California</option>
-                      <option value="Bcs">Baja California Sur</option>
-                      <option value="Cam">Campeche</option>
-                      <option value="Chis">Chiapas</option>
-                      <option value="Chi">Chihuahua</option>
-                      <option value="Cdm">Ciudad de México</option>
-                      <option value="Coa">Coahuila</option>
-                      <option value="Col">Colima</option>
-                      <option value="Dur">Durango</option>
-                      <option value="Edm">Estado de México</option>
-                      <option value="Gua">Guanajuato</option>
-                      <option value="Gue">Guerrero</option>
-                      <option value="Hid">Hidalgo</option>
-                      <option value="Jal">Jalisco</option>
-                      <option value="Mic">Michoacán</option>
-                      <option value="Mor">Morelos</option>
-                      <option value="Nay">Nayarit</option>
-                      <option value="Nle">Nuevo León</option>
-                      <option value="Oax">Oaxaca</option>
-                      <option value="Pue">Puebla</option>
-                      <option value="Qro">Querétaro</option>
-                      <option value="Qur">Quintana Roo</option>
-                      <option value="Snl">San Luis Potosí</option>
-                      <option value="Sin">Sinaloa</option>
-                      <option value="Son">Sonora</option>
-                      <option value="Tab">Tabasco</option>
-                      <option value="Tam">Tamaulipas</option>
-                      <option value="Tla">Tlaxcala</option>
-                      <option value="Ver">Veracruz</option>
-                      <option value="Yuc">Yucatán</option>
-                      <option value="Zac">Zacatecas</option>
+                      <option value="Aguascalientes">Aguascalientes</option>
+                      <option value="Baja California">Baja California</option>
+                      <option value="Baja California Sur">Baja California Sur</option>
+                      <option value="Campeche">Campeche</option>
+                      <option value="Chiapas">Chiapas</option>
+                      <option value="Chihuahua">Chihuahua</option>
+                      <option value="Ciudad de México">Ciudad de México</option>
+                      <option value="Coahuila">Coahuila</option>
+                      <option value="Colima">Colima</option>
+                      <option value="Durango">Durango</option>
+                      <option value="Estado de México">Estado de México</option>
+                      <option value="Guanajuato">Guanajuato</option>
+                      <option value="Guerrero">Guerrero</option>
+                      <option value="Hidalgo">Hidalgo</option>
+                      <option value="Jalisco">Jalisco</option>
+                      <option value="Michoacán">Michoacán</option>
+                      <option value="Morelos">Morelos</option>
+                      <option value="Nayarit">Nayarit</option>
+                      <option value="Nuevo León">Nuevo León</option>
+                      <option value="Oaxaca">Oaxaca</option>
+                      <option value="Puebla">Puebla</option>
+                      <option value="Querétaro">Querétaro</option>
+                      <option value="Quintana Roo">Quintana Roo</option>
+                      <option value="San Luis Potosí">San Luis Potosí</option>
+                      <option value="Sinaloa">Sinaloa</option>
+                      <option value="Sonora">Sonora</option>
+                      <option value="Tabasco">Tabasco</option>
+                      <option value="Tamaulipas">Tamaulipas</option>
+                      <option value="Tlaxcala">Tlaxcala</option>
+                      <option value="Veracruz">Veracruz</option>
+                      <option value="Yucatán">Yucatán</option>
+                      <option value="Zacatecas">Zacatecas</option>
                     </select>
                   </div>
                 </div>
@@ -178,4 +178,4 @@ class NewUserForm extends Component{
 	}
 }
 
-export default withRouter(NewUserForm);
+export default withRouter(UserEdit);

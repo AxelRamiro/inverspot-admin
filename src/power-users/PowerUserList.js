@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import Filterbar from '../Components/Filterbar'
-import Adminresult from '../Components/Adminresult'
+import Filterbar from '../components/Filterbar'
+import PowerUser from './PowerUser'
 import { Link } from 'react-router'
 import { list } from '../Services/user'
 
@@ -12,13 +12,13 @@ function PowerUserList(props) {
 
     return (
       <ul className="media-list search-results-list content-group">
-        {filtered.map(user => (<Adminresult key={user._id} user={user} onRemove={ props.onRemoveItem } />) )}
+        {filtered.map(user => (<PowerUser key={user._id} user={user} onRemove={ props.onRemoveItem } />) )}
       </ul>
     )
 
 }
 
-class Admins extends Component {
+class PowerUsers extends Component {
 
   constructor(props) {
     super(props)
@@ -76,7 +76,7 @@ class Admins extends Component {
               <PowerUserList powerUsers={ this.state.powerUsers } onRemoveItem={ this.onRemoveItem }
                 filterText={ this.state.filterText } filterTag={ this.state.filterTag } />
               { this.state.powerUsers.length === 0 &&
-                <h3>No hay usuarios. <Link to="/admin-users/new">Crear nuevo.</Link></h3> }
+                <h3>No hay usuarios. <Link to="/power-users/new">Crear nuevo.</Link></h3> }
             </div>
           </div>
         </div>
@@ -85,4 +85,4 @@ class Admins extends Component {
   }
 }
 
-export default Admins;
+export default PowerUsers;

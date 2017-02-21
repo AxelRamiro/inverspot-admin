@@ -1,20 +1,33 @@
 import React, { Component } from 'react'
 import { Link } from "react-router"
 
-class Headernav extends Component {
+class Nav extends Component {
   render() {
+    let map = {
+      'power-users': 'Administradores',
+      'users': 'Usuarios',
+      'properties': 'Propiedades',
+      'list': 'Todos',
+      'new': 'Nuevo',
+      'edit': 'Editar',
+      'investments': 'Inversiones',
+      'builders': 'Desarrolladores'
+    }
+    let breadcrumbs = this.props.breadcrumbs.split('/').slice(1)
+    breadcrumbs = [ breadcrumbs[0], breadcrumbs[breadcrumbs.length - 1] ]
+    breadcrumbs = breadcrumbs.map( e => {
+      return (<li key={e}>{map[e]}</li>)
+    } )
     return (
       <div className="page-header page-header-default">
         <div className="breadcrumb-line">
           <ul className="breadcrumb">
             <li>
-            <Link to='/properties' >
-              <i className="icon-home2 position-left"></i> Panel Principal
+            <Link to='/' >
+              <i className="icon-home2 position-left"></i>
             </Link>
             </li>
-            <li className="active">
-              {this.props.headerNav}
-            </li>
+            { breadcrumbs }
           </ul>
 
           <ul className="breadcrumb-elements">
@@ -41,4 +54,4 @@ class Headernav extends Component {
   }
 }
 
-export default Headernav;
+export default Nav;

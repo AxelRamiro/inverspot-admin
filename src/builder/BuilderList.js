@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import Filterbar from '../Components/Filterbar'
-//import Filterdate from '../Components/Filterdate'
+import Filterbar from '../components/Filterbar'
+//import Filterdate from '../components/Filterdate'
 import { Link } from 'react-router'
-import BuilderCard from '../Components/builderCard'
+import Builder from './Builder'
 import { list } from '../Services/builder'
 
 function BuilderList(props) {
@@ -13,7 +13,7 @@ function BuilderList(props) {
 
   return (
     <ul className="media-list search-results-list content-group">
-      {filtered.map(builder => (<BuilderCard key={builder._id} builder={builder} onRemove={ props.onRemoveItem } />) )}
+      {filtered.map(builder => (<Builder key={builder._id} builder={builder} onRemove={ props.onRemoveItem } />) )}
     </ul>
   )
 

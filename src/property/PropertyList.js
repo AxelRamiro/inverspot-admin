@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import Filterbar from '../Components/Filterbar'
-import Propertycard from '../Components/Propertycard'
+import Filterbar from '../components/Filterbar'
+import Property from './Property'
 import { list } from '../Services/property'
 
-class Properties extends Component {
+class PropertyList extends Component {
 
   constructor(props) {
     super(props)
@@ -42,11 +42,11 @@ class Properties extends Component {
       <div className="content">
         <Filterbar nameFilter='Busqueda de Propiedades' filters={ filters } />
         <div className="row">
-        { this.state.properties.map(( e, i ) => <Propertycard onRemove={ this.onRemoveItem } key={e._id} property={e} /> ) }
+        { this.state.properties.map(( e, i ) => <Property onRemove={ this.onRemoveItem } key={e._id} property={e} /> ) }
         </div>
       </div>
     )
   }
 }
 
-export default Properties;
+export default PropertyList;

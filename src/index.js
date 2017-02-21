@@ -1,19 +1,20 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router, Route, hashHistory } from 'react-router'
-import Login from './Pages/Login'
-import App from './Pages/App'
-import Properties from './Pages/Properties'
-import Admins from './Pages/Admins'
-import Users from './Pages/Users'
-import adminNew from './Pages/adminNew'
-import propertyNew from './Pages/propertyNew'
-import Investments from './Pages/Investments'
-import builders from './Pages/builders'
-import userNew from './Pages/userNew'
+// Pages
+import Login from './auth/Login'
+import App from './app/App'
+import PowerUserList from './power-users/PowerUserList'
+import PowerUserForm from './power-users/PowerUserForm'
+import PropertyList from './property/PropertyList'
+import PropertyForm from './property/PropertyForm'
+import UserList from './user/UserList'
+import UserEdit from './user/UserEdit'
+import InvestmentList from './investment/InvestmentList'
+import InvestmentForm from './investment/InvestmentForm'
+import BuilderList from './builder/BuilderList'
+import BuilderForm from './builder/BuilderForm'
 import { isLogged } from './Services/auth'
-import investmentNew from './Pages/investmentNew'
-import builderNew from './Pages/builderNew'
 import moment from 'moment'
 moment.locale('es')
 
@@ -30,29 +31,29 @@ ReactDOM.render(
   <Router history={hashHistory}>
     <Route path='/' component={App} onEnter={ requireAuth }>
       <Route path='properties'>
-        <Route path='list' component={ Properties } />
-        <Route path='new' component={propertyNew} />
-        <Route path=':id/edit' component={propertyNew} />
+        <Route path='list' component={ PropertyList } />
+        <Route path='new' component={PropertyForm} />
+        <Route path=':id/edit' component={PropertyForm} />
       </Route>
-      <Route path='admin-users'>
-        <Route path='list' component={Admins} />
-        <Route path='new' component={adminNew} />
-        <Route path=':id/edit' component={adminNew} />
+      <Route path='power-users'>
+        <Route path='list' component={PowerUserList} />
+        <Route path='new' component={PowerUserForm} />
+        <Route path=':id/edit' component={PowerUserForm} />
       </Route>
       <Route path='users'>
-        <Route path='list' component={Users} />
-        <Route path='new' component={userNew} />
-        <Route path=':id/edit' component={userNew} />
+        <Route path='list' component={UserList} />
+        <Route path='new' component={UserEdit} />
+        <Route path=':id/edit' component={UserEdit} />
       </Route>
       <Route path='investments'>
-        <Route path='list' component={Investments} />
-        <Route path='new' component={investmentNew} />
-        <Route path=':id/edit' component={investmentNew} />
+        <Route path='list' component={InvestmentList} />
+        <Route path='new' component={InvestmentForm} />
+        <Route path=':id/edit' component={InvestmentForm} />
       </Route>
       <Route path='builders'>
-        <Route path='list' component={builders} />
-        <Route path='new' component={builderNew} />
-        <Route path=':id/edit' component={builderNew} />
+        <Route path='list' component={BuilderList} />
+        <Route path='new' component={BuilderForm} />
+        <Route path=':id/edit' component={BuilderForm} />
       </Route>
     </Route>
     <Route path="/login" component={ Login } />

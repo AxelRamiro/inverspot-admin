@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { Link } from 'react-router'
 import { remove } from '../Services/property'
 import Swal from 'react-swal'
-import Date from './molecules/formated-date'
+import Date from '../components/molecules/formated-date'
 
-class Propertycard extends Component {
+class Property extends Component {
 
   constructor(props) {
     super(props)
@@ -97,4 +97,4 @@ class Propertycard extends Component {
   }
 }
 
-export default Propertycard;
+export default Property;

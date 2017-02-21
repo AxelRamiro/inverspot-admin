@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import Tabs from '../Components/Tabs'
-import NewUserForm from '../Components/NewUserForm'
-import InvestmentForm from '../Components/InvestmentForm'
+import Tabs from '../components/Tabs'
+import UserForm from './UserForm'
+import InvestorForm from './InvestorForm'
 
-class NewUser extends Component {
+class UserEdit extends Component {
   render() {
     return (
       <div>
@@ -13,8 +13,8 @@ class NewUser extends Component {
             <div className="col-lg-12">
               <div className="tabbable">
                 <div className="tab-content">
-                  <NewUserForm path={this.props.route}/>
-                  { this.props.route.path === ':id/edit' && <InvestmentForm /> }
+                  <UserForm path={this.props.route}/>
+                  { this.props.route.path === ':id/edit' && <InvestorForm /> }
                 </div>
               </div>
             </div>
@@ -26,4 +26,4 @@ class NewUser extends Component {
   }
 }
 
-export default NewUser;
+export default UserEdit;

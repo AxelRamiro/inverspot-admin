@@ -14,7 +14,7 @@ function AdminInput(props) {
   )
 }
 
-class AdminForm extends Component {
+class PowerUserForm extends Component {
 
   constructor(props) {
     super(props)
@@ -52,10 +52,10 @@ class AdminForm extends Component {
     e.preventDefault()
     if(this.props.route.path === "new") {
       return create( this.state.user )
-      .then( success => success && this.props.router.push('/admin-users/list') )
+      .then( success => success && this.props.router.push('/power-users/list') )
     }
     edit( this.state.user )
-      .then( success => success && this.props.router.push('/admin-users/list') )
+      .then( success => success && this.props.router.push('/power-users/list') )
   }
 
   render() {
@@ -156,4 +156,4 @@ class AdminForm extends Component {
   }
 }
 
-export default withRouter(AdminForm);
+export default withRouter(PowerUserForm);

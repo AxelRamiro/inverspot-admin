@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import Filterbar from '../Components/Filterbar'
-//import Filterdate from '../Components/Filterdate'
-import InvestmentRow from '../Components/investmentRows'
+import Filterbar from '../components/Filterbar'
+//import Filterdate from '../components/Filterdate'
+import Investment from './Investment'
 import { list } from '../Services/investment'
 import { Link } from 'react-router'
 
@@ -13,7 +13,7 @@ function InvestmentList(props) {
 
     return (
       <tbody>
-        {filtered.map(investment => (<InvestmentRow key={investment._id} investment={investment} onRemove={ props.onRemoveItem } />) )}
+        {filtered.map(investment => (<Investment key={investment._id} investment={investment} onRemove={ props.onRemoveItem } />) )}
       </tbody>
     )
 

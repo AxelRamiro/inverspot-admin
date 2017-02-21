@@ -27,7 +27,7 @@ class Filterbar extends Component {
 
   render() {
     return (
-      <div className="panel panel-flat">
+      <div className={'panel panel-flat ' + ( this.state.isClose ? 'panel-collapsed' : '' )}>
         <div className="panel-heading">
           <h5 className="panel-title">
             { this.props.nameFilter }
@@ -41,7 +41,7 @@ class Filterbar extends Component {
         </div>
 
         <div className="panel-body">
-          <form action="#" className="main-search">
+          <form onSubmit={e => e.preventDefault()} className="main-search">
             <div className="input-group content-group">
               <div className="has-feedback has-feedback-left">
                 <input type="text" name="filterText" value={ this.state.filterText }
