@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Filterbar from '../components/Filterbar'
 //import Filterdate from '../components/Filterdate'
 import Investment from './Investment'
-import { list } from '../Services/investment'
+import { list } from '../Services/crud'
 import { Link } from 'react-router'
 
 function InvestmentList(props) {
@@ -42,8 +42,8 @@ class investors extends Component {
     }
 
     componentDidMount() {
-      list({}, {sort:'name', populate:{path: 'investor property'}}, 'investor sharesNumber amount property createdAt')
-        .then( investments => this.setState({investments, filtered: investments}) )
+      list('investment', {}, {sort:'name', populate:{path: 'investor property'}}, 'investor sharesNumber amount property createdAt')
+        .then( investments => this.setState({investments}) )
         .catch( e => alert(e) )
     }
 

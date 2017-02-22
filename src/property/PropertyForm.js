@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { list } from '../Services/builder'
 import { create, edit, list as pList } from '../Services/property'
+import { withRouter } from 'react-router'
 
 function PropertyFieldset(props) {
   return (
@@ -78,7 +79,7 @@ class PropertyForm extends Component {
   componentDidMount() {
     list({},{},'name')
       .then( builders => this.setState({ builders }) )
-    if(this.props.params.id) {
+    if(this.props.params && this.props.params.id) {
       pList({_id: this.props.params.id},{}, '')
         .then( property => this.setState({property: property[0]}) )
         .catch(alert)
@@ -100,7 +101,7 @@ class PropertyForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    if(this.props.route.path === "new") {
+    if(this.props.path.path === "new") {
       return create( this.state.property )
         .then( success => success && this.props.router.push('/properties/list') )
     }
@@ -111,7 +112,7 @@ class PropertyForm extends Component {
   render() {
     let property = this.state.property
     return (
-      <div className="content">
+      <div className="tab-pane fade in active" id="one">
 
         <div className="panel panel-flat">
           <div className="panel-heading">
@@ -128,7 +129,9 @@ class PropertyForm extends Component {
                 <div className="form-group">
                   <label className="control-label col-lg-3">Descripción del Proyecto <span className="text-danger">*</span></label>
                   <div className="col-lg-9">
-                    <textarea rows="5" cols="5" name="textarea" className="form-control" required="required" placeholder="" aria-required="true"></textarea>
+                    <textarea value={ property.description }
+                      onChange={ this.handleInput } rows="5" cols="5"
+                      name="description" className="form-control" required="required" placeholder="" aria-required="true"></textarea>
                   </div>
                 </div>
 
@@ -213,11 +216,11 @@ class PropertyForm extends Component {
               </PropertyFieldset>
 
               <PropertyFieldset title="Datos Fijos">
-                <PropertyInput onChange={ this.handleInput } type="number" name="fixedData.objectiveFundraising"
+                <PropertyInput value={ property.fixedData.objectiveFundraising } onChange={ this.handleInput } type="number" name="fixedData.objectiveFundraising"
                   group="$" required>Objetivo de Captación</PropertyInput>
-                <PropertyInput onChange={ this.handleInput } type="number" name="fixedData.expectedAnnualYield"
+                <PropertyInput value={ property.fixedData.expectedAnnualYield } onChange={ this.handleInput } type="number" name="fixedData.expectedAnnualYield"
                   group="%" required>Rendimiento Anual Estimado</PropertyInput>
-                <PropertyInput onChange={ this.handleInput } type="number" name="fixedData.expectedUtility"
+                <PropertyInput value={ property.fixedData.expectedUtility } onChange={ this.handleInput } type="number" name="fixedData.expectedUtility"
                   group="%" required>Utilidad Esperada</PropertyInput>
               </PropertyFieldset>
 
@@ -264,4 +267,4 @@ class PropertyForm extends Component {
   }
 }
 
-export default PropertyForm;
+export default withRouter(PropertyForm)

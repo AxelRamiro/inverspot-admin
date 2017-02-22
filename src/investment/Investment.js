@@ -29,15 +29,6 @@ class Investment extends Component {
   render() {
     return (
       <tr>
-        <Swal
-          title="Eliminar usuario"
-          text={ `¿Está seguro que desea eliminar la inversion del usuario ${ this.props.investment.investor.name }?` }
-          confirmButtonText="Sí, eliminar"
-          confirmButtonColor="#f44336"
-          cancelButtonText="Cancelar"
-          type="error"
-          isOpen={ this.state.showConfirm || false }
-          callback={ this.state.callback || null } />
         <td>
           <h6 className="media-heading">
             <Link to={`investments/${this.props.investment._id}/edit`}>

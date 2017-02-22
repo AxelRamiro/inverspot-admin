@@ -60,7 +60,7 @@ class InvestorForm extends Component{
 	render() {
 		return(
 
-      <div className="tab-pane fade" id="inversor">
+      <div className="tab-pane fade" id="two">
 
         <div className="panel panel-flat">
           <div className="panel-heading">

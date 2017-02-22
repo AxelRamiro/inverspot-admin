@@ -64,7 +64,7 @@ class UserEdit extends Component{
 	render() {
 		return(
 
-      <div className="tab-pane fade in active" id="user">
+      <div className="tab-pane fade in active" id="one">
 
         <div className="panel panel-flat">
           <div className="panel-heading">

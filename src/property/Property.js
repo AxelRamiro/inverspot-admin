@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { remove } from '../Services/property'
 import Swal from 'react-swal'
 import Date from '../components/molecules/formated-date'
+import currency from '../Services/currency'
 
 class Property extends Component {
 
@@ -71,7 +72,7 @@ class Property extends Component {
             <div className="media-annotation mt-5">
               <Date label="Fecha de Alta:" date={ property.createdAt } />
             </div>
-            <p>Costo Total​: ${ property.marketResearch.totalCost || 0 }</p>
+            <p>Costo Total​: { currency(property.marketResearch.totalCost || 0) }</p>
             <div className="media-annotation mt-5">
               <i className="icon-pin-alt position-left"></i>
               { `${property.address.suburb}, ${property.address.city}` }

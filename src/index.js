@@ -7,7 +7,7 @@ import App from './app/App'
 import PowerUserList from './power-users/PowerUserList'
 import PowerUserForm from './power-users/PowerUserForm'
 import PropertyList from './property/PropertyList'
-import PropertyForm from './property/PropertyForm'
+import PropertyEdit from './property/PropertyEdit'
 import UserList from './user/UserList'
 import UserEdit from './user/UserEdit'
 import InvestmentList from './investment/InvestmentList'
@@ -32,8 +32,8 @@ ReactDOM.render(
     <Route path='/' component={App} onEnter={ requireAuth }>
       <Route path='properties'>
         <Route path='list' component={ PropertyList } />
-        <Route path='new' component={PropertyForm} />
-        <Route path=':id/edit' component={PropertyForm} />
+        <Route path='new' component={PropertyEdit} />
+        <Route path=':id/edit' component={PropertyEdit} />
       </Route>
       <Route path='power-users'>
         <Route path='list' component={PowerUserList} />
