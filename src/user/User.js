@@ -45,7 +45,11 @@ class User extends Component {
           callback={ this.state.callback || null } />
         <li className="media">
           <div className="media-body">
-            <h6 className="media-heading"><a href="#">{this.props.user.name}</a></h6>
+            <h6 className="media-heading">
+              <Link to={`users/${this.props.user._id}/edit`}>
+                {this.props.user.name}
+              </Link>
+            </h6>
               <ul className="list-inline list-inline-separate text-muted">
                 <li>
                   <span className="label bg-info">Usuario</span>
@@ -53,8 +57,8 @@ class User extends Component {
                 </li>
                 <li>Miembro desde: { moment(this.props.user.createdAt).format('LL') }</li>
                 <li><i className="icon-pin position-left"></i>{ this.props.user.state }</li>
-                <li><i className="icon-paper position-left"></i>Medio: Facebook</li>
-                <li><i className="icon-paper position-left"></i>Asesor: <a href="#">Juan Ortega Garcia</a></li>
+                <li><i className="icon-paper position-left"></i>Medio: { this.props.user.contactFrom }</li>
+                <li><i className="icon-paper position-left"></i>Asesor: <Link to={`/power-users/${this.props.user.asesor._id}/edit`}>{ this.props.user.asesor.name }</Link></li>
               </ul>
               <p><i className="icon-mail5"></i> { this.props.user.email }<br/>
               <i className="icon-phone2"></i> { this.props.user.telephone }</p>

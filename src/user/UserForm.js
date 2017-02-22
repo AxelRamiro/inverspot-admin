@@ -9,21 +9,28 @@ class UserEdit extends Component{
 		this.handleInput = this.handleInput.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.state = {
+			advisers: [],
 			user: {
 				name: '',
 				email: '',
 				state: '',
 				telephone: '',
 				status: '',
-				password: ''
+				password: '',
+				asesor: '',
+				contactFrom: ''
 			}
 		}
 
 	}
 
 	componentDidMount() {
+
+		list({level:'asesor'},{}, 'name')
+			.then( advisers => this.setState({advisers}))
+
 		if(this.props.params.id) {
-			list({_id: this.props.params.id},{}, 'name email state telephone status')
+			list({_id: this.props.params.id},{}, 'name email state telephone status asesor contactFrom')
 				.then(user => {
 					user = user[0]
 					user.password = ''
@@ -132,7 +139,7 @@ class UserEdit extends Component{
                     <label>Teléfono #</label>
                     <input type="number" className="form-control" required="required" name="telephone"
 										value={ this.state.user.telephone } onChange={ this.handleInput }/>
-                    <span className="help-block">999-999-99-99</span>
+                    <span className="help-block">9999999999</span>
                   </div>
                   <div className="col-md-6">
                       <label>Estatus</label>
@@ -141,6 +148,31 @@ class UserEdit extends Component{
                           <option value="">Elige</option>
                           <option value="active">Activo</option>
                           <option value="inactive">Inactivo</option>
+                      </select>
+                  </div>
+                </div>
+              </div>
+
+							<div className="form-group">
+                <div className="row">
+                  <div className="col-md-6">
+                    <label>Asesor</label>
+										<select name="asesor" className="form-control" required
+											value={ this.state.user.asesor } onChange={ this.handleInput }>
+												<option value="">Elige</option>
+												{ this.state.advisers.map(a => <option key={a._id} value={a._id}>{a.name}</option>) }
+										</select>
+                  </div>
+                  <div className="col-md-6">
+                      <label>Medio</label>
+                      <select name="contactFrom" className="form-control" required
+												value={ this.state.user.contactFrom } onChange={ this.handleInput }>
+                          <option value="">Elige</option>
+                          <option value="Facebook">Facebook</option>
+                          <option value="Twitter">Twitter</option>
+													<option value="Google">Google</option>
+                          <option value="Asesor">Asesor</option>
+                          <option value="Otro">Otro</option>
                       </select>
                   </div>
                 </div>
