@@ -89,11 +89,11 @@ class investors extends Component {
 
               <InvestmentList investments={ this.state.investments } onRemoveItem={ this.onRemoveItem }
                 filterText={ this.state.filterText } filterTag={ this.state.filterTag } />
-              { this.state.investments.length === 0 &&
-                <tr><h3 >No hay inversiones. <Link to="/investments/new">Crear nueva.</Link></h3></tr> }
 
             </table>
           </div>
+          { this.state.investments.length === 0 &&
+            <h3>No hay inversiones. <Link to="/investments/new">Crear nueva.</Link></h3> }
         </div>
 
       </div>

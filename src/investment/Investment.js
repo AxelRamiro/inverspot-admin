@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 import { remove } from '../Services/user'
-import Swal from 'react-swal'
 import moment from 'moment'
 
 class Investment extends Component {

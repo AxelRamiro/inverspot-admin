@@ -23,7 +23,7 @@ function PropertyTable(props) {
         </tr>
       </thead>
       <tbody>
-        { props.items.map( e => <Row title={e.title} status={e.status}/> ) }
+        { props.items.map( e => <Row key={e._id} title={e.title} status={e.status}/> ) }
       </tbody>
     </table>
   )
