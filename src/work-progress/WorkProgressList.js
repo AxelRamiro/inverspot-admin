@@ -39,8 +39,8 @@ class WPR extends Component {
         isOpen={ this.state.showConfirm || false }
         callback={ this.state.callback || null } />
       <td>
-        <a href="assets/images/placeholder.jpg" data-popup="lightbox">
-          <img src="assets/images/placeholder.jpg" alt="" className="img-rounded img-preview" />
+        <a href={`http://192.169.174.96/static/${progress.photo}`} data-popup="lightbox">
+          <img src={ `http://192.169.174.96/static/${progress.photo}` } alt="" className="img-rounded img-preview" />
         </a>
       </td>
       <td>

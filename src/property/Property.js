@@ -60,7 +60,7 @@ class Property extends Component {
             </div>
           </div>
           <div className="thumb">
-            <img src="assets/images/placeholder.jpg" alt=""/>
+            <img src={ `http://192.169.174.96/static/${property.image}` } alt=""/>
             <div className="caption-overflow">
               <span>
                 <Link className="btn btn-info btn-sm" to={`/properties/${ property._id }/edit`}>Editar</Link>
