@@ -8,6 +8,7 @@ class WorkProgressForm extends Component {
     super(props)
     this.addWorkProgress = this.addWorkProgress.bind(this)
     this.handleInput = this.handleInput.bind(this)
+    this.handleImageChange = this.handleImageChange.bind(this)
     this.state = {
       month: '',
       year: '',
@@ -24,12 +25,26 @@ class WorkProgressForm extends Component {
 		this.setState(newState)
 	}
 
+  handleImageChange(e) {
+    e.preventDefault()
+    let file = e.target.files[0]
+    this.setState({
+      photo: file,
+    })
+  }
+
   addWorkProgress(e) {
     e.preventDefault()
-    let formData = Object.assign(this.state)
-    formData.property = this.props.params.id
-    create('work-progress', formData)
+    let formData = new FormData()
+    let data = Object.assign(this.state)
+    for(let k in data) {
+      console.log(k, data[k])
+      formData.append(k, data[k])
+    }
+    formData.append('property', this.props.params.id)
+    create('work-progress', formData, true)
       .then( saved => {
+        console.log(saved);
         if(saved) {
           this.props.onNewProgress(saved)
           let resetState = {
@@ -55,7 +70,7 @@ class WorkProgressForm extends Component {
 
             <div className="col-md-6">
               <label className="display-block">Subir Imagen de Avance <span className="text-danger">*</span></label>
-              <input type="file" className="file-styled" required="required" />
+              <input type="file" className="file-styled" name="photo" required onChange={ this.handleImageChange } />
               <span className="help-block">Formatos aceptados: gif, png, jpg. Tamaño Max: 2Mb</span>
             </div>
           </div>
@@ -66,7 +81,7 @@ class WorkProgressForm extends Component {
             <div className="col-md-6">
               <label className="control-label col-lg-3">Mes <span className="text-danger">*</span></label>
               <div className="form-group col-md-6">
-                <select value={ this.state.month } onChange={ this.handleInput } className="form-control" name="month">
+                <select value={ this.state.month } onChange={ this.handleInput } className="form-control" name="month" required>
                   <option>Elige</option>
                   <option>Enero</option>
                   <option>Febrero</option>
@@ -86,7 +101,7 @@ class WorkProgressForm extends Component {
             <div className="col-md-6">
               <label className="control-label col-lg-3">Año <span className="text-danger">*</span></label>
               <div className="form-group col-md-6">
-                <select value={ this.state.year } onChange={ this.handleInput } className="form-control" name="year">
+                <select value={ this.state.year } onChange={ this.handleInput } className="form-control" name="year" required>
                   <option>Elige</option>
                   <option>2015</option>
                   <option>2016</option>

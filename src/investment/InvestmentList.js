@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import Filterbar from '../components/Filterbar'
-//import Filterdate from '../components/Filterdate'
+import Swal from 'react-swal'
 import Investment from './Investment'
-import { list } from '../Services/crud'
+import { list, remove } from '../Services/crud'
 import { Link } from 'react-router'
 
 function InvestmentList(props) {
 
     let filtered = props.investments.filter(investment => {
-      return !(investment.investor.name.toLowerCase().indexOf(props.filterText.toLowerCase()) === -1 || props.filterTag )
+      return (investment.investor.name.toLowerCase().indexOf(props.filterText.toLowerCase()) > -1 || investment.property.title.toLowerCase().indexOf(props.filterText.toLowerCase()) > -1 )
     })
 
     return (
@@ -33,11 +33,20 @@ class investors extends Component {
     }
 
     onRemoveItem( investment ) {
-      let copy = this.state.investments.slice()
-      let index = copy.findIndex( e => e._id === investment._id )
-      copy.splice(index, 1)
       this.setState({
-        investments: copy
+        showConfirm: true,
+        callback: confirm => {
+          if(!confirm) return
+          remove('investment', investment._id).then( _ => {
+            let copy = this.state.investments.slice()
+            let index = copy.findIndex( e => e._id === investment._id )
+            copy.splice(index, 1)
+            this.setState({
+              showConfirm: false,
+              investments: copy
+            })
+          } )
+        }
       })
     }
 
@@ -61,11 +70,22 @@ class investors extends Component {
 
     return (
       <div className="content">
+
+        <Swal
+          title="Eliminar inversión"
+          text={ `¿Está seguro que desea eliminar la inversión?` }
+          confirmButtonText="Sí, eliminar"
+          confirmButtonColor="#f44336"
+          cancelButtonText="Cancelar"
+          type="error"
+          isOpen={ this.state.showConfirm || false }
+          callback={ this.state.callback || null } />
+
         <Filterbar nameFilter='Búsqueda de Inversores'  onFilterChange={ this.filter } >
         </Filterbar>
 
         <div className="panel panel-body">
-          <div className="panel panel-success panel-bordered" style={stylep}>
+          { this.state.investments.length > 0 && <div className="panel panel-success panel-bordered" style={stylep}>
             <div className="panel-heading" style={stylep2}>
               <h5 className="panel-title"> Inversores</h5>
               <div className="heading-elements">
@@ -91,7 +111,7 @@ class investors extends Component {
                 filterText={ this.state.filterText } filterTag={ this.state.filterTag } />
 
             </table>
-          </div>
+          </div> }
           { this.state.investments.length === 0 &&
             <h3>No hay inversiones. <Link to="/investments/new">Crear nueva.</Link></h3> }
         </div>

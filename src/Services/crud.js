@@ -1,12 +1,10 @@
 import { BASE_URL, getToken } from './auth'
 
-function create(entity, data) {
-  let body = JSON.stringify(data)
+function create(entity, data, upload) {
+  let body = upload ? data : JSON.stringify(data)
   const opts = {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    headers: {},
     body
   }
   opts.headers.Authorization = getToken()
@@ -15,7 +13,24 @@ function create(entity, data) {
       if (res.ok) {
         return res.json()
       }
-      throw new Error('Error en creación de usuario')
+      throw new Error(`Error en creación de ${entity}`)
+    })
+}
+
+function upload(entity, data, update ) {
+  let body = data
+  const opts = {
+    method: update ? 'PUT' : 'POST',
+    headers: {},
+    body
+  }
+  opts.headers.Authorization = getToken()
+  return fetch(`${BASE_URL}/${entity}`, opts)
+    .then( res => {
+      if (res.ok) {
+        return res.json()
+      }
+      throw new Error(`Error en creación de ${entity}`)
     })
 }
 
@@ -79,4 +94,4 @@ function list(entity, filter, query, select) {
     })
 }
 
-export { create, edit, list, remove }
+export { create, edit, list, remove, upload }

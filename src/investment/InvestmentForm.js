@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { create, list, edit } from '../Services/investment'
 import { list as userList} from '../Services/user'
 import { list as propertyList} from '../Services/property'
+import currency from '../Services/currency'
 import { withRouter } from 'react-router'
 
 class InvestmentNew extends Component {
@@ -11,6 +12,7 @@ class InvestmentNew extends Component {
     this.handleInput = this.handleInput.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.state = {
+      max: 1,
       investment: {
         investor: '',
         property: '',
@@ -23,18 +25,25 @@ class InvestmentNew extends Component {
   }
 
   componentDidMount() {
+    let query = {status: "available"}
     userList({level:{ $in: ['user', 'investor'] }}, {sort:'name'},'name')
       .then( users => this.setState({ users }) )
-    propertyList({}, {sort:'title'},'title dataSheet')
-      .then( properties => this.setState({ properties }) )
     if(this.props.params.id) {
-      list({_id: this.props.params.id},{}, 'investor property sharesNumber amount')
+      list({_id: this.props.params.id}, {populate: 'property'}, 'investor property sharesNumber amount')
         .then( investment => {
           investment = investment[0]
-          this.setState({ investment, multiplier: (investment.amount / investment.sharesNumber) })
+          query = { $or: [ query , { _id: investment.property._id } ] }
+          this.setState({ investment, multiplier: (investment.amount / investment.sharesNumber), max: (investment.property.dataSheet.totalShares - investment.property.dataSheet.sharesSold + investment.sharesNumber) })
+        } )
+        .then( () => {
+          return propertyList(query, {sort:'title'},'title dataSheet')
+            .then( properties => this.setState({ properties }) )
         } )
         .catch(alert)
     }
+    propertyList(query, {sort:'title'},'title dataSheet')
+      .then( properties => this.setState({ properties }) )
+
   }
 
   handleInput(e) {
@@ -44,7 +53,9 @@ class InvestmentNew extends Component {
     let newState = Object.assign( this.state )
     switch(name) {
       case 'property':
-        newState['multiplier'] = this.state.properties.find( e => e._id === value ).dataSheet.investAmount
+        let selectedProperty = this.state.properties.find( e => e._id === value )
+        newState['multiplier'] = selectedProperty.dataSheet.investAmount
+        newState['max'] = this.props.route.path === 'new' ? (selectedProperty.dataSheet.totalShares - selectedProperty.dataSheet.sharesSold) : this.state.max
         break;
       case 'sharesNumber':
         newState.investment['amount'] = value * this.state.multiplier
@@ -66,7 +77,6 @@ class InvestmentNew extends Component {
     edit( this.state.investment )
       .then( success => success && this.props.router.push('/investments/list') )
   }
-
 
   render() {
     let investment = this.state.investment
@@ -91,7 +101,7 @@ class InvestmentNew extends Component {
                           <div className="row">
                             <div className="col-md-6">
                               <label>Nombre de Usuario: <span className="text-danger">*</span></label><br/>
-                              <select name="investor" className="form-control" required="required"
+                              <select disabled={this.props.route.path !== 'new'} name="investor" className="form-control" required="required"
                                 onChange={ this.handleInput } value={ investment.investor }>
                                 <option value="" disabled>Usuario</option>
                                 { this.state.users.map( e => <option key={ e._id } value={ e._id }>{ e.name }</option> ) }
@@ -99,7 +109,7 @@ class InvestmentNew extends Component {
                             </div>
                             <div className="col-md-6">
                               <label>Nombre de Propiedad: <span className="text-danger">*</span></label><br/>
-                              <select name="property" className="form-control"  required="required"
+                              <select disabled={this.props.route.path !== 'new'} name="property" className="form-control"  required="required"
                                 onChange={ this.handleInput } value={ investment.property }>
                                 <option value="" disabled>Propiedad</option>
                                 { this.state.properties.map( e => <option key={ e._id } value={ e._id }>{ e.title }</option> ) }
@@ -112,10 +122,12 @@ class InvestmentNew extends Component {
                           <div className="row">
                             <div className="col-md-6">
                               <label>Número de Acciones Adquiridas: <span className="text-danger">*</span></label>
-                              <input disabled={ !this.state.multiplier } type="number" name="sharesNumber" className="form-control" required="required"
-                                onChange={ this.handleInput } value={ investment.sharesNumber }/>
+                              <input disabled={ !this.state.multiplier } type="number" min={1}
+                                max={ this.state.max }
+                                name="sharesNumber" className="form-control" required="required"
+                                onChange={ this.handleInput } value={ investment.sharesNumber } />
                             </div>
-                            <span>{ this.state.investment.sharesNumber * this.state.multiplier }</span>
+                            <span>{ currency((this.state.investment.sharesNumber * this.state.multiplier) || 0) }</span>
                           </div>
                         </div>
 

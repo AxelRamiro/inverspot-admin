@@ -58,11 +58,12 @@ class Builder extends Component {
   }
 
   render() {
+    let builder = this.props.builder
     return (
       <div>
         <Swal
           title="Eliminar desarrollador"
-          text={ `¿Está seguro que desea eliminar al desarrollador ${ this.props.builder.name }?` }
+          text={ `¿Está seguro que desea eliminar al desarrollador ${ builder.name }?` }
           confirmButtonText="Sí, eliminar"
           confirmButtonColor="#f44336"
           cancelButtonText="Cancelar"
@@ -71,13 +72,13 @@ class Builder extends Component {
           callback={ this.state.callback || null } />
         <li className="media">
           <div className="media-body">
-            <h5 className="media-heading"><a href="#">{this.props.builder.name}</a></h5>
+            <h5 className="media-heading"><Link to={ `/builders/${builder._id}/edit` }>{builder.name}</Link></h5>
               <ul className="list-inline list-inline-separate text-muted">
                 <li><span className="label bg-violet"> Desarrollador</span></li>
-                <li>Años Operando: {this.props.builder.yearsWork}</li>
-                <li><span className="label bg-success"> {this.props.builder.completedWorks} Obras concluidas </span></li>
+                <li>Años Operando: {builder.yearsWork}</li>
+                <li><span className="label bg-success"> {builder.completedWorks} Obras concluidas </span></li>
               </ul>
-              <p><i className="icon-hyperlink"></i><a href={this.props.builder.website}> {this.props.builder.website}</a><br/></p>
+              <p><i className="icon-hyperlink"></i><a href={ `http://${builder.website}` } target="_blank"> {builder.website}</a><br/></p>
           </div>
           <div className="media-right media-top">
             <ul className="icons-list text-nowrap">
@@ -86,7 +87,7 @@ class Builder extends Component {
 
                 <ul className="dropdown-menu dropdown-menu-right">
                   <li>
-                    <Link to={`builders/${this.props.builder._id}/edit`}>
+                    <Link to={`builders/${builder._id}/edit`}>
                       <i className="icon-cog pull-left"></i> Editar Perfil
                     </Link>
                   </li>

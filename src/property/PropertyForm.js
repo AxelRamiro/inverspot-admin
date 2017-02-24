@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { list } from '../Services/builder'
 import { create, edit, list as pList } from '../Services/property'
+import { upload } from '../Services/crud'
 import { withRouter } from 'react-router'
 
 function PropertyFieldset(props) {
@@ -37,6 +38,7 @@ class PropertyForm extends Component {
     super(props)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleInput = this.handleInput.bind(this)
+    this.handleImageChange = this.handleImageChange.bind(this)
     this.state = {
       property: {
         title: "",
@@ -99,13 +101,25 @@ class PropertyForm extends Component {
     this.setState(newState)
   }
 
+  handleImageChange(e) {
+    e.preventDefault()
+    let file = e.target.files[0]
+    this.setState( { image: file
+    } )
+  }
+
   handleSubmit(e) {
     e.preventDefault()
-    if(this.props.path.path === "new") {
-      return create( this.state.property )
-        .then( success => success && this.props.router.push('/properties/list') )
-    }
-    edit( this.state.property )
+    let formData = new FormData()
+    let data = Object.assign(this.state.property)
+    // for(let k in data) {
+    //   console.log(k, data[k]);
+    //   formData.append(k, data[k])
+    // }
+    formData.append('image', this.state.image)
+    formData.append('property', JSON.stringify(this.state.property))
+
+    upload( 'property' , formData, this.props.path.path === ':id/edit' )
       .then( success => success && this.props.router.push('/properties/list') )
   }
 
@@ -135,7 +149,7 @@ class PropertyForm extends Component {
                   </div>
                 </div>
 
-                <PropertyInput onChange={ this.handleInput } name="image" type="text" value={ property.file }
+                <PropertyInput onChange={ this.handleImageChange } name="image" type="file" value={ property.file }
                   className="file-styled" required>Imagen Principal del Proyecto</PropertyInput>
 
                 <PropertyInput
@@ -256,7 +270,7 @@ class PropertyForm extends Component {
 
               <div className="text-right">
                 {/* <button type="reset" className="btn btn-default" id="reset">Limpiar <i className="icon-reload-alt position-right"></i></button> */}
-                <button type="submit" className="btn btn-primary">Crear Propiedad <i className="icon-arrow-right14 position-right"></i></button>
+                <button type="submit" className="btn btn-primary">{ this.props.path.path === "new" ? 'Crear Propiedad' : 'Actualizar Propiedad' }<i className="icon-arrow-right14 position-right"></i></button>
               </div>
             </form>
           </div>

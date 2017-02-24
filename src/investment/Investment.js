@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
-import { remove } from '../Services/user'
+import currency from '../Services/currency'
 import moment from 'moment'
 
 class Investment extends Component {
@@ -15,30 +15,24 @@ class Investment extends Component {
   }
 
   deleteInvestment() {
-    this.setState({
-      showConfirm: true,
-      callback: confirm => {
-        confirm && remove(this.props.investment._id)
-          .then(removedInvestment => this.props.onRemove( removedInvestment ))
-          .catch(alert)
-      }
-    })
+    this.props.onRemove( this.props.investment )
   }
 
   render() {
+    let investment = this.props.investment
     return (
       <tr>
         <td>
           <h6 className="media-heading">
-            <Link to={`investments/${this.props.investment._id}/edit`}>
-              {this.props.investment.investor.name}
+            <Link to={`investments/${investment._id}/edit`}>
+              {investment.investor.name}
             </Link>
           </h6>
         </td>
-        <td>{this.props.investment.sharesNumber}</td>
-        <td>{this.props.investment.amount}</td>
-        <td>{this.props.investment.property.title}</td>
-        <td>{ moment(this.props.investment.createdAt).format('LL') }</td>
+        <td>{investment.sharesNumber}</td>
+        <td>{currency(investment.amount)}</td>
+        <td>{investment.property.title}</td>
+        <td>{ moment(investment.createdAt).format('LL') }</td>
         <td className="text-center">
             <ul className="icons-list">
                 <li className="dropdown">
@@ -47,13 +41,13 @@ class Investment extends Component {
                     </a>
                     <ul className="dropdown-menu dropdown-menu-right">
                       <li>
-                      <Link to={`investments/${this.props.investment._id}/edit`}>
+                      <Link to={`investments/${investment._id}/edit`}>
                         <i className="icon-cog pull-left"></i> Editar Inversion
                       </Link>
                       </li>
                       <li className="divider">
                       </li>
-                      <li onClick={ this.deleteUser }>
+                      <li onClick={ this.deleteInvestment }>
                         <a>
                           <i className="icon-cross2 text-danger" id="sweet_combine"></i>
                            Eliminar

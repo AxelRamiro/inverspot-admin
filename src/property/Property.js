@@ -53,7 +53,7 @@ class Property extends Component {
                     <li className="dropdown">
                         <a href="#" className="dropdown-toggle text-default" data-toggle="dropdown" aria-expanded="false"><i className="icon-cog5"></i><span className="caret"></span></a>
                         <ul className="dropdown-menu dropdown-menu-right">
-                            <li><Link to={ `/builders/${ property.idBuilder }/edit` }>Ver Desarrollador</Link></li>
+                            <li><Link to={ `/builders/${ property.builder }/edit` }>Ver Desarrollador</Link></li>
                         </ul>
                     </li>
                 </ul>

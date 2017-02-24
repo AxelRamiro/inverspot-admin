@@ -27,8 +27,8 @@ class User extends Component {
   }
 
   render() {
-    let statustag
-    if (this.props.user.status === 'active')
+    let statustag, user = this.props.user
+    if (user.status === 'active')
       statustag =(<span className="label bg-success">Activo</span>)
     else
       statustag =(<span className="label bg-danger">Inactivo</span>)
@@ -36,7 +36,7 @@ class User extends Component {
       <div>
         <Swal
           title="Eliminar usuario"
-          text={ `¿Está seguro que desea eliminar al usuario ${ this.props.user.name }?` }
+          text={ `¿Está seguro que desea eliminar al usuario ${ user.name }?` }
           confirmButtonText="Sí, eliminar"
           confirmButtonColor="#f44336"
           cancelButtonText="Cancelar"
@@ -46,8 +46,8 @@ class User extends Component {
         <li className="media">
           <div className="media-body">
             <h6 className="media-heading">
-              <Link to={`users/${this.props.user._id}/edit`}>
-                {this.props.user.name}
+              <Link to={`users/${user._id}/edit`}>
+                {user.name}
               </Link>
             </h6>
               <ul className="list-inline list-inline-separate text-muted">
@@ -55,13 +55,13 @@ class User extends Component {
                   <span className="label bg-info">Usuario</span>
                   {statustag}
                 </li>
-                <li>Miembro desde: { moment(this.props.user.createdAt).format('LL') }</li>
-                <li><i className="icon-pin position-left"></i>{ this.props.user.state }</li>
-                <li><i className="icon-paper position-left"></i>Medio: { this.props.user.contactFrom }</li>
-                <li><i className="icon-paper position-left"></i>Asesor: <Link to={`/power-users/${this.props.user.asesor._id}/edit`}>{ this.props.user.asesor.name }</Link></li>
+                <li>Miembro desde: { moment(user.createdAt).format('LL') }</li>
+                <li><i className="icon-pin position-left"></i>{ user.state }</li>
+                <li><i className="icon-paper position-left"></i>Medio: { user.contactFrom }</li>
+                { user.asesor && <li><i className="icon-paper position-left"></i>Asesor: <Link to={`/power-users/${user.asesor._id}/edit`}>{ user.asesor.name }</Link></li> }
               </ul>
-              <p><i className="icon-mail5"></i> { this.props.user.email }<br/>
-              <i className="icon-phone2"></i> { this.props.user.telephone }</p>
+              <p><i className="icon-mail5"></i> { user.email }<br/>
+              <i className="icon-phone2"></i> { user.telephone }</p>
           </div>
           <div className="media-right media-top">
             <ul className="icons-list text-nowrap">
@@ -70,7 +70,7 @@ class User extends Component {
 
                 <ul className="dropdown-menu dropdown-menu-right">
                   <li>
-                  <Link to={`users/${this.props.user._id}/edit`}>
+                  <Link to={`users/${user._id}/edit`}>
                     <i className="icon-profile pull-left"></i> Editar Perfil
                   </Link>
                   </li>

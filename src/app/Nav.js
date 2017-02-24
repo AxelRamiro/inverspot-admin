@@ -15,8 +15,8 @@ class Nav extends Component {
     }
     let breadcrumbs = this.props.breadcrumbs.split('/').slice(1)
     breadcrumbs = [ breadcrumbs[0], breadcrumbs[breadcrumbs.length - 1] ]
-    breadcrumbs = breadcrumbs.map( e => {
-      return (<li key={e}>{map[e]}</li>)
+    breadcrumbs = breadcrumbs.map( (e, i) => {
+      return (<li key={`${e}${i}`}>{map[e]}</li>)
     } )
     return (
       <div className="page-header page-header-default">

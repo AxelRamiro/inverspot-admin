@@ -42,7 +42,7 @@ class PowerUser extends Component {
           <div className="media-left">
           </div>
           <div className="media-body">
-            <h6 className="media-heading"><a href="#">{this.props.user.name}</a></h6>
+            <h6 className="media-heading"><Link to={ `/power-users/${this.props.user._id}/edit` }>{this.props.user.name}</Link></h6>
               <ul className="list-inline list-inline-separate text-muted">
                 <li><span className="label bg-danger">{ this.props.user.level }</span></li>
                 <li>Miembro desde: { moment(this.props.user.createdAt).format('LL') }</li>

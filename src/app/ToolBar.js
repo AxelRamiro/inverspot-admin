@@ -19,7 +19,7 @@ class ToolBar extends Component {
     return (
       <div className="navbar navbar-inverse bg-purple-600">
         <div className="navbar-header">
-          <Link to="/propiedades" className="navbar-brand">
+          <Link to="/properties/list" className="navbar-brand">
             <img src="assets/images/logo_light.png" alt=""/>
           </Link>
 
