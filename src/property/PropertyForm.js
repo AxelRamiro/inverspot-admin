@@ -3,6 +3,7 @@ import { list } from '../Services/builder'
 import { list as pList } from '../Services/property'
 import { upload } from '../Services/crud'
 import { withRouter } from 'react-router'
+import EdiTable from '../components/EdiTable'
 
 function PropertyFieldset(props) {
   return (
@@ -38,6 +39,12 @@ class PropertyForm extends Component {
     super(props)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleInput = this.handleInput.bind(this)
+    this.handleEdiTable = this.handleEdiTable.bind(this)
+    this.onAddRow = this.onAddRow.bind(this)
+    this.onAddColumn = this.onAddColumn.bind(this)
+    this.onDeleteRow = this.onDeleteRow.bind(this)
+    this.onDeleteColumn = this.onDeleteColumn.bind(this)
+    this.onDeleteTable = this.onDeleteTable.bind(this)
     this.handleImageChange = this.handleImageChange.bind(this)
     this.state = {
       property: {
@@ -72,7 +79,17 @@ class PropertyForm extends Component {
             objectiveFundraising: "",
             expectedAnnualYield: 0,
             expectedUtility: 0
-        }
+        },
+        capitalOutflow: {
+          totalCost: 0,
+          salePrice: 0,
+          salesCommission: 0,
+          utility: 0,
+          estimatedTime: 0,
+          yieldIn18Months: 0,
+          annualYield: 0
+        },
+        supplementaryData: [["", ""],["", ""]]
       },
       builders: []
     }
@@ -83,9 +100,19 @@ class PropertyForm extends Component {
       .then( builders => this.setState({ builders }) )
     if(this.props.params && this.props.params.id) {
       pList({_id: this.props.params.id},{}, '')
-        .then( property => this.setState({property: property[0]}) )
+        .then( properties => this.setState((prev, props) => {
+          let property = Object.assign(prev.property, properties[0])
+          if (property.supplementaryData.length === 0) {
+            property.supplementaryData = prev.property.supplementaryData
+          }
+          return { property }
+        }) )
         .catch(alert)
     }
+  }
+
+  componentWillUpdate(nP, nS) {
+    console.log('STATE', nS);
   }
 
   handleInput(e) {
@@ -104,8 +131,70 @@ class PropertyForm extends Component {
   handleImageChange(e) {
     e.preventDefault()
     let file = e.target.files[0]
-    this.setState( { image: file
+    this.setState( { image: file } )
+  }
+
+  handleEdiTable( coords, value ) {
+    console.log("CHANGE:", coords, value);
+    let copy = this.state.property.supplementaryData.slice()
+    copy[coords[0]][coords[1]] = value
+    let property = Object.assign({}, this.state.property)
+    property.supplementaryData = copy
+    this.setState({property})
+  }
+
+  onDeleteRow(index) {
+    let copy = this.state.property.supplementaryData.slice()
+    copy.splice(index, 1)
+    let property = Object.assign({}, this.state.property)
+    property.supplementaryData = copy
+    this.setState({property})
+  }
+
+  onDeleteColumn(index) {
+    let copy = this.state.property.supplementaryData.slice()
+    let table = copy.map( r => {
+      r.splice(index, 1)
+      return r
     } )
+    let filtered = table.filter( c => c.length > 0 )
+    let property = Object.assign({}, this.state.property)
+    console.log(table);
+    property.supplementaryData = filtered
+    this.setState({property})
+  }
+
+  onDeleteTable(e) {
+    e.preventDefault()
+    let property = Object.assign({}, this.state.property)
+    property.supplementaryData = []
+    this.setState({property})
+  }
+
+  onAddRow(e) {
+    e.preventDefault()
+    let copy = this.state.property.supplementaryData.slice()
+    let base = copy.length > 0 ? copy[0].map(a => "") : [""]
+    copy.push(base)
+    let property = Object.assign({}, this.state.property)
+    property.supplementaryData = copy
+    this.setState({property})
+  }
+
+  onAddColumn(e) {
+    e.preventDefault()
+    let copy = this.state.property.supplementaryData.slice()
+    // let newTable = [""]
+    if(copy.length > 0) {
+      copy.forEach(r => r.push(""))
+    }
+    else {
+      copy.push([""])
+    }
+    console.log(copy);
+    let property = Object.assign({}, this.state.property)
+    property.supplementaryData = copy
+    this.setState({property})
   }
 
   handleSubmit(e) {
@@ -241,27 +330,46 @@ class PropertyForm extends Component {
                     <table id="table1" className="table table-bordered">
                       <tbody>
                         <tr>
-                          <td></td>
+                          <td>Costo Total</td>
+                          <td><input name="capitalOutflow.totalCost" value={ property.capitalOutflow.totalCost } onChange={ this.handleInput } style={{border: 0}} /></td>
                         </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-
-                <legend className="text-bold">Datos Complementarios</legend>
-                <div className="form-group">
-                  <div className="col-lg-12">
-                    <table id="table2" className="table table-bordered">
-                      <tbody>
                         <tr>
-                          <td></td>
+                          <td>Precio Estimado de Venta</td>
+                          <td><input name="capitalOutflow.salePrice" value={ property.capitalOutflow.salePrice } onChange={ this.handleInput } style={{border: 0}} /></td>
+                        </tr>
+                        <tr>
+                          <td>Comisión por Venta</td>
+                          <td><input name="capitalOutflow.salesCommission" value={ property.capitalOutflow.salesCommission } onChange={ this.handleInput } style={{border: 0}} /></td>
+                        </tr>
+                        <tr>
+                          <td>Utilidad</td>
+                          <td><input name="capitalOutflow.utility" value={ property.capitalOutflow.utility } onChange={ this.handleInput } style={{border: 0}} /></td>
+                        </tr>
+                        <tr>
+                          <td>Rendimiento en 18 meses</td>
+                          <td><input name="capitalOutflow.yieldIn18Months" value={ property.capitalOutflow.yieldIn18Months } onChange={ this.handleInput } style={{border: 0}} /></td>
+                        </tr>
+                        <tr>
+                          <td>Rendimiento Anualizado</td>
+                          <td><input name="capitalOutflow.annualYield" value={ property.capitalOutflow.annualYield } onChange={ this.handleInput } style={{border: 0}} /></td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
                 </div>
+
+
               </fieldset>
+
+              <EdiTable
+                title="Datos Complementarios"
+                onAddRow={ this.onAddRow }
+                onAddColumn={ this.onAddColumn }
+                onDeleteRow={this.onDeleteRow}
+                onDeleteColumn={this.onDeleteColumn}
+                onDeleteTable={this.onDeleteTable}
+                onChange={this.handleEdiTable}
+                rows={ property.supplementaryData } />
 
               <div className="text-right">
                 {/* <button type="reset" className="btn btn-default" id="reset">Limpiar <i className="icon-reload-alt position-right"></i></button> */}
