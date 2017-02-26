@@ -46,7 +46,7 @@ class Property extends Component {
           <div className="panel-heading">
             <h6 className="panel-title">
             { property.title || 'default' }
-            <div className="media-annotation mt-5">{ property.description }</div>
+            {/* <div className="media-annotation mt-5">{ property.description }</div> */}
             <a className="heading-elements-toggle"><i className="icon-more"></i></a></h6>
             <div className="heading-elements">
                 <ul className="heading-text list-inline pull-right">

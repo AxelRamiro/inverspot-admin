@@ -1,9 +1,12 @@
+// Librerías necesarias
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router, Route, hashHistory } from 'react-router'
-// Pages
-import Login from './auth/Login'
+// Componentes a Renderizar en cada ruta
 import App from './app/App'
+import Login from './auth/Login'
+import Recovery from './auth/Recovery'
+import ChangePass from './auth/ChangePass'
 import PowerUserList from './power-users/PowerUserList'
 import PowerUserForm from './power-users/PowerUserForm'
 import PropertyList from './property/PropertyList'
@@ -18,7 +21,7 @@ import { isLogged } from './Services/auth'
 import moment from 'moment'
 moment.locale('es')
 
-
+// Verifica que esté autenticado el usuario
 function requireAuth(nextState, replace) {
   if (!isLogged()) {
     replace({
@@ -27,6 +30,7 @@ function requireAuth(nextState, replace) {
   }
 }
 
+// Renderiza el router con las vistas correspondientes
 ReactDOM.render(
   <Router history={hashHistory}>
     <Route path='/' component={App} onEnter={ requireAuth }>
@@ -57,6 +61,8 @@ ReactDOM.render(
       </Route>
     </Route>
     <Route path="/login" component={ Login } />
+    <Route path="/recovery" component={ Recovery } />
+    <Route path="/change-pass/:token" component={ ChangePass } />
   </Router>,
   document.getElementById('root')
 );

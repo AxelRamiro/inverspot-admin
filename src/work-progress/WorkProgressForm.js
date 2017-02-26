@@ -38,8 +38,9 @@ class WorkProgressForm extends Component {
     let formData = new FormData()
     let data = Object.assign(this.state)
     for(let k in data) {
-      console.log(k, data[k])
-      formData.append(k, data[k])
+      if(data.hasOwnProperty(k)) {
+        formData.append(k, data[k])
+      }
     }
     formData.append('property', this.props.params.id)
     create('work-progress', formData, true)

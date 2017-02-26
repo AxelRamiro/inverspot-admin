@@ -5,7 +5,6 @@ import { list } from '../Services/property'
 
 function PropertyList(props) {
   let filtered = props.properties.filter(property => {
-    console.log(property.title);
     return !(property.title.toLowerCase().indexOf(props.filterText.toLowerCase()) === -1 || (props.filterTag && props.filterTag !== property.status))
   })
   return (

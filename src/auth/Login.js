@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { login } from '../Services/auth'
-import { withRouter } from 'react-router'
+import { Link, withRouter } from 'react-router'
 
 class Login extends Component {
 
@@ -83,7 +83,7 @@ class Login extends Component {
                     <div className="form-group login-options">
                       <div className="row">
                         <div className="col-sm-6 col-sm-push-6 text-right">
-                          <a href="login_recuperar_pass.html">Olvide mi contraseña</a>
+                          <Link to="recovery">Olvide mi contraseña</Link>
                         </div>
                       </div>
                     </div>

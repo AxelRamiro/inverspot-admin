@@ -44,8 +44,31 @@ function logout(cb) {
   cb(true)
 }
 
+function recovery(email) {
+  return fetch(`${BASE_URL}/auth/recovery?email=${email}`)
+    .then( response => {
+      if(response.ok) {
+        return response.text()
+      }
+      throw new Error('Email no registrado')
+    } )
+}
+
+function changePass(token, newPassword) {
+  return fetch(`${BASE_URL}/auth/verify/${token}?password=${newPassword}`)
+    .then( res => {
+      if (res.ok) {
+        return res.json().then(data => {
+          save(TOKEN, data.token)
+          save('my', JSON.stringify(data.user))
+          return true
+        })
+      }
+    } )
+}
+
 function isLogged() {
   return !!getToken()
 }
 
-export { login, logout, isLogged, getToken, BASE_URL }
+export { changePass, login, logout, isLogged, getToken, recovery, BASE_URL }

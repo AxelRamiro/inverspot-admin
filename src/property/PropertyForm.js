@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { list } from '../Services/builder'
-import { create, edit, list as pList } from '../Services/property'
+import { list as pList } from '../Services/property'
 import { upload } from '../Services/crud'
 import { withRouter } from 'react-router'
 
@@ -111,11 +111,6 @@ class PropertyForm extends Component {
   handleSubmit(e) {
     e.preventDefault()
     let formData = new FormData()
-    let data = Object.assign(this.state.property)
-    // for(let k in data) {
-    //   console.log(k, data[k]);
-    //   formData.append(k, data[k])
-    // }
     formData.append('image', this.state.image)
     formData.append('property', JSON.stringify(this.state.property))
 
@@ -150,7 +145,7 @@ class PropertyForm extends Component {
                 </div>
 
                 <PropertyInput onChange={ this.handleImageChange } name="image" type="file" value={ property.file }
-                  className="file-styled" required>Imagen Principal del Proyecto</PropertyInput>
+                  className="file-styled">Imagen Principal del Proyecto</PropertyInput>
 
                 <PropertyInput
                   onChange={ this.handleInput }
@@ -200,7 +195,7 @@ class PropertyForm extends Component {
                   group="Meses">Plazo Estimado</PropertyInput>
                   <PropertyInput onChange={ this.handleInput } type="number"
                     name="dataSheet.totalShares" value={ property.dataSheet.totalShares } required>Total de Participaciones</PropertyInput>
-                  <PropertyInput onChange={ this.handleInput } type="number"
+                  <PropertyInput onChange={ this.handleInput } type="number" min="1" max={ property.dataSheet.totalShares }
                     name="dataSheet.sharesSold" value={ property.dataSheet.sharesSold }
                     required placeholder="0">Participaciones Vendidas</PropertyInput>
               </PropertyFieldset>
