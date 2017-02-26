@@ -25,13 +25,13 @@ class Investment extends Component {
         <td>
           <h6 className="media-heading">
             <Link to={`investments/${investment._id}/edit`}>
-              {investment.investor.name}
+              {investment.investor && investment.investor.name}
             </Link>
           </h6>
         </td>
         <td>{investment.sharesNumber}</td>
         <td>{currency(investment.amount)}</td>
-        <td>{investment.property.title}</td>
+        <td>{investment.property && investment.property.title}</td>
         <td>{ moment(investment.createdAt).format('LL') }</td>
         <td className="text-center">
             <ul className="icons-list">

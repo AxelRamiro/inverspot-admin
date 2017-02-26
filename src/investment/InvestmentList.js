@@ -8,7 +8,12 @@ import { Link } from 'react-router'
 function InvestmentList(props) {
 
     let filtered = props.investments.filter(investment => {
-      return (investment.investor.name.toLowerCase().indexOf(props.filterText.toLowerCase()) > -1 || investment.property.title.toLowerCase().indexOf(props.filterText.toLowerCase()) > -1 )
+      const filter = props.filterText
+      let name = investment.investor ? investment.investor.name : ''
+      let title = investment.property ? investment.property.title : ''
+      let matchName = name.toLowerCase().indexOf(filter.toLowerCase()) > -1
+      let matchTitle = title.toLowerCase().indexOf(filter.toLowerCase()) > -1
+      return matchName || matchTitle
     })
 
     return (
