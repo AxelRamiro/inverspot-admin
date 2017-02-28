@@ -4,6 +4,7 @@ import { list as pList } from '../Services/property'
 import { upload } from '../Services/crud'
 import { withRouter } from 'react-router'
 import EdiTable from '../components/EdiTable'
+// import EdiTable2 from '../components/EdiTable2'
 
 function PropertyFieldset(props) {
   return (
@@ -80,16 +81,8 @@ class PropertyForm extends Component {
             expectedAnnualYield: 0,
             expectedUtility: 0
         },
-        capitalOutflow: {
-          totalCost: 0,
-          salePrice: 0,
-          salesCommission: 0,
-          utility: 0,
-          estimatedTime: 0,
-          yieldIn18Months: 0,
-          annualYield: 0
-        },
-        supplementaryData: [["", ""],["", ""]]
+        capitalOutflow: [["Costo Total", ""], ["Precio Estimado de Venta", ""], ["Comisión por Venta",""], ["Utilidad",""], ["Rendimiento Anualizado", ""]],
+        supplementaryData: [["", ""],["", ""]],
       },
       builders: []
     }
@@ -101,6 +94,7 @@ class PropertyForm extends Component {
     if(this.props.params && this.props.params.id) {
       pList({_id: this.props.params.id},{}, '')
         .then( properties => this.setState((prev, props) => {
+          console.log(properties[0]);
           let property = Object.assign(prev.property, properties[0])
           if (property.supplementaryData.length === 0) {
             property.supplementaryData = prev.property.supplementaryData
@@ -112,7 +106,7 @@ class PropertyForm extends Component {
   }
 
   componentWillUpdate(nP, nS) {
-    console.log('STATE', nS);
+    // console.log('STATE', nS);
   }
 
   handleInput(e) {
@@ -134,25 +128,25 @@ class PropertyForm extends Component {
     this.setState( { image: file } )
   }
 
-  handleEdiTable( coords, value ) {
-    console.log("CHANGE:", coords, value);
-    let copy = this.state.property.supplementaryData.slice()
+  handleEdiTable(controlId, coords, value) {
+    console.log("CHANGE:", controlId, coords, value);
+    let copy = this.state.property[controlId].slice()
     copy[coords[0]][coords[1]] = value
     let property = Object.assign({}, this.state.property)
-    property.supplementaryData = copy
+    property[controlId] = copy
     this.setState({property})
   }
 
-  onDeleteRow(index) {
-    let copy = this.state.property.supplementaryData.slice()
+  onDeleteRow(controlId, index) {
+    let copy = this.state.property[controlId].slice()
     copy.splice(index, 1)
     let property = Object.assign({}, this.state.property)
-    property.supplementaryData = copy
+    property[controlId] = copy
     this.setState({property})
   }
 
-  onDeleteColumn(index) {
-    let copy = this.state.property.supplementaryData.slice()
+  onDeleteColumn(controlId, index) {
+    let copy = this.state.property[controlId].slice()
     let table = copy.map( r => {
       r.splice(index, 1)
       return r
@@ -160,30 +154,27 @@ class PropertyForm extends Component {
     let filtered = table.filter( c => c.length > 0 )
     let property = Object.assign({}, this.state.property)
     console.log(table);
-    property.supplementaryData = filtered
+    property[controlId] = filtered
     this.setState({property})
   }
 
-  onDeleteTable(e) {
-    e.preventDefault()
+  onDeleteTable(controlId) {
     let property = Object.assign({}, this.state.property)
-    property.supplementaryData = []
+    property[controlId] = []
     this.setState({property})
   }
 
-  onAddRow(e) {
-    e.preventDefault()
-    let copy = this.state.property.supplementaryData.slice()
+  onAddRow(controlId) {
+    let copy = this.state.property[controlId].slice()
     let base = copy.length > 0 ? copy[0].map(a => "") : [""]
     copy.push(base)
     let property = Object.assign({}, this.state.property)
-    property.supplementaryData = copy
+    property[controlId] = copy
     this.setState({property})
   }
 
-  onAddColumn(e) {
-    e.preventDefault()
-    let copy = this.state.property.supplementaryData.slice()
+  onAddColumn(controlId) {
+    let copy = this.state.property[controlId].slice()
     // let newTable = [""]
     if(copy.length > 0) {
       copy.forEach(r => r.push(""))
@@ -193,7 +184,7 @@ class PropertyForm extends Component {
     }
     console.log(copy);
     let property = Object.assign({}, this.state.property)
-    property.supplementaryData = copy
+    property[controlId] = copy
     this.setState({property})
   }
 
@@ -271,7 +262,7 @@ class PropertyForm extends Component {
                       { this.state.builders.map( e => <option key={ e._id } value={ e._id }>{ e.name }</option> ) }
                     </select>
                     {/* <select className="selectpicker" data-show-subtext="true" data-live-search="true" required="required">
-                     </select> */}
+                    </select> */}
                   </div>
                 </div>
               </PropertyFieldset>
@@ -282,11 +273,11 @@ class PropertyForm extends Component {
                 <PropertyInput onChange={ this.handleInput } type="number"
                   name="dataSheet.estimatedTerm" value={ property.dataSheet.estimatedTerm } required
                   group="Meses">Plazo Estimado</PropertyInput>
-                  <PropertyInput onChange={ this.handleInput } type="number"
-                    name="dataSheet.totalShares" value={ property.dataSheet.totalShares } required>Total de Participaciones</PropertyInput>
-                  <PropertyInput onChange={ this.handleInput } type="number" min="1" max={ property.dataSheet.totalShares }
-                    name="dataSheet.sharesSold" value={ property.dataSheet.sharesSold }
-                    required placeholder="0">Participaciones Vendidas</PropertyInput>
+                <PropertyInput onChange={ this.handleInput } type="number"
+                  name="dataSheet.totalShares" value={ property.dataSheet.totalShares } required>Total de Participaciones</PropertyInput>
+                <PropertyInput onChange={ this.handleInput } type="number" min="1" max={ property.dataSheet.totalShares }
+                  name="dataSheet.sharesSold" value={ property.dataSheet.sharesSold }
+                  required placeholder="0">Participaciones Vendidas</PropertyInput>
               </PropertyFieldset>
 
               <PropertyFieldset title="Estudio de Mercado">
@@ -322,7 +313,7 @@ class PropertyForm extends Component {
                   group="%" required>Utilidad Esperada</PropertyInput>
               </PropertyFieldset>
 
-              <fieldset className="content-group">
+              {/* <fieldset className="content-group">
 
                 <legend className="text-bold">Corrida Financiera</legend>
                 <div className="form-group">
@@ -359,10 +350,22 @@ class PropertyForm extends Component {
                 </div>
 
 
-              </fieldset>
+              </fieldset> */}
+
+              <EdiTable
+                title="Corrida Financiera"
+                controlId="capitalOutflow"
+                onAddRow={ this.onAddRow }
+                onAddColumn={ this.onAddColumn }
+                onDeleteRow={this.onDeleteRow}
+                onDeleteColumn={this.onDeleteColumn}
+                onDeleteTable={this.onDeleteTable}
+                onChange={this.handleEdiTable}
+                rows={ property.capitalOutflow } />
 
               <EdiTable
                 title="Datos Complementarios"
+                controlId="supplementaryData"
                 onAddRow={ this.onAddRow }
                 onAddColumn={ this.onAddColumn }
                 onDeleteRow={this.onDeleteRow}
