@@ -14,7 +14,7 @@ class UserEdit extends Component {
               <div className="tabbable">
                 <div className="tab-content">
                   <UserForm path={this.props.route}/>
-                  { this.props.route.path === ':id/edit' && <InvestorForm /> }
+                  <InvestorForm /> 
                 </div>
               </div>
             </div>

@@ -1,0 +1,274 @@
+{"general":[
+  {
+    "name": "name",
+    "hint": "Nombre *",
+    "required": "required"
+  },
+  {
+    "name": "firstName",
+    "hint": "Apellido paterno *",
+    "required": "required"
+  },
+  {
+    "name": "lastName",
+    "hint": "Apellido materno *",
+    "required": "required"
+  },
+  {
+    "name": "sex",
+    "hint": "Sexo *",
+    "kind": "select",
+    "required": "required",
+    "options": [
+      {
+        "name": "Masculino",
+        "value": "Masculino"
+      },
+      {
+        "name": "Femenino",
+        "value": "Femenino"
+      }
+    ]
+  },
+  {
+    "name": "nationality",
+    "hint": "Nacionalidad *",
+    "required": "required"
+  },
+  {
+    "name": "birthPlace",
+    "hint": "Lugar de nacimiento"
+  },
+  {
+    "name": "idNumber",
+    "hint": "Número de identificación"
+  },
+  {
+    "name": "typeid",
+    "hint": "Tipo de identificación",
+    "kind": "select",
+    "options": [
+      {
+        "name": "Credencial de Elector",
+        "value": "Credencial de Elector"
+      },
+      {
+        "name": "Pasaporte",
+        "value": "Pasaporte"
+      },
+      {
+        "name": "Cartilla Militar",
+        "value": "Cartilla Militar"
+      },
+      {
+        "name": "Licencia de Conducir",
+        "value": "Licencia de Conducir"
+      }
+    ]
+  },
+  {
+    "name": "curp",
+    "hint": "Clave Única de Registro de Población (CURP)"
+  },
+  {
+    "name": "rfc",
+    "hint": "RFC"
+  },
+  {
+    "name": "address.street",
+    "hint": "Domicilio *",
+    "required": "required"
+  },
+  {
+    "name": "address.suburb",
+    "hint": "Colonia *",
+    "required": "required"
+  },
+  {
+    "name": "address.town",
+    "hint": "Delegación o Municipio *",
+    "required": "required"
+  },
+  {
+    "name": "address.city",
+    "hint": "Ciudad o Población",
+    "required": "required"
+  },
+  {
+    "name": "address.country",
+    "hint": "País *",
+    "required": "required"
+  },
+  {
+    "name": "address.zipCode",
+    "hint": "Código Postal *",
+    "required": "required"
+  },
+  {
+    "name": "maritalStatus",
+    "hint": "Estado Civíl",
+    "kind": "select",
+    "options": [
+      {
+        "name": "Soltero",
+        "value": "Soltero"
+      },
+      {
+        "name": "Comprometido",
+        "value": "Comprometido"
+      },
+      {
+        "name": "Casado",
+        "value": "Casado"
+      },
+      {
+        "name": "Divorciado",
+        "value": "Divorciado"
+      },
+      {
+        "name": "Viudo",
+        "value": "Viudo"
+      }
+    ]
+  },
+  {
+    "name": "regime",
+    "hint": "En caso de ser casado/a (Bajo que régimen):",
+    "kind": "select",
+    "options": [
+      {
+        "name": "Bienes Mancomunados",
+        "value": "Bienes Mancomunados"
+      },
+      {
+        "name": "Separación de Bienes",
+        "value": "Separación de Bienes"
+      }
+    ]
+  },
+  {
+    "name": "spouse",
+    "hint": "Nombre Completo del/la Conyugue"
+  },
+  {
+    "name": "email",
+    "hint": "Correo Electrónico *",
+    "required": "required"
+  },
+  {
+    "name": "telephone",
+    "hint": "Teléfono Fijo *",
+    "required": "required"
+  }
+],
+"invest":[
+  {
+    "name": "investmentForm.methodPayment",
+    "hint": "Forma de Pago",
+    "kind": "select",
+    "options": [
+      {
+        "name": "Efectivo",
+        "value": "Efectivo"
+      },
+      {
+        "name": "Cheque",
+        "value": "Cheque"
+      },
+      {
+        "name": "Transferencia",
+        "value": "Transferencia"
+      }
+    ]
+  },
+  {
+    "name": "investmentForm.regime",
+    "hint": "Forma de Anticipo",
+    "kind": "select",
+    "options": [
+      {
+        "name": "Financiado",
+        "value": "Financiado"
+      },
+      {
+        "name": "Contado",
+        "value": "Contado"
+      }
+    ]
+  }
+],
+"bankData":[
+  {
+    "name": "bankData.acoountNumber",
+    "hint": "Número de Cuenta de Depósito"
+  },
+  {
+    "name": "bankData.standardizedBankKey",
+    "hint": "Clave"
+  },
+  {
+    "name": "bankData.bank",
+    "hint": "Banco"
+  },
+  {
+    "name": "bankData.acountHolder",
+    "hint": "Titular de la cuenta"
+  }
+],
+"beneficiary1":[
+  {
+    "name": "beneficiary1.name",
+    "hint": "Nombre"
+  },
+  {
+    "name": "beneficiary1.firstName",
+    "hint": "Apellido paterno"
+  },
+  {
+    "name": "beneficiary1.lastName",
+    "hint": "Apellido materno"
+  },
+  {
+    "name": "beneficiary1.telephone",
+    "hint": "Teléfono Fijo"
+  },
+  {
+    "name": "beneficiary1.cellphone",
+    "hint": "Teléfono Celular"
+  },
+  {
+    "name": "beneficiary1.percentage",
+    "hint": "Cantidad de Porcentaje"
+  }
+],
+"beneficiary2":[
+  {
+    "name": "beneficiary2.name",
+    "hint": "Nombre"
+  },
+  {
+    "name": "beneficiary2.firstName",
+    "hint": "Apellido paterno"
+  },
+  {
+    "name": "beneficiary2.lastName",
+    "hint": "Apellido materno"
+  },
+  {
+    "name": "beneficiary2.telephone",
+    "hint": "Teléfono Fijo"
+  },
+  {
+    "name": "beneficiary2.cellphone",
+    "hint": "Teléfono Celular"
+  },
+  {
+    "name": "beneficiary2.percentage",
+    "hint": "Cantidad de Porcentaje"
+  },
+  {
+    "name": "comments",
+    "hint": "Comentarios"
+  }
+]
+}
