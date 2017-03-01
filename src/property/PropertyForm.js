@@ -275,7 +275,7 @@ class PropertyForm extends Component {
                   group="Meses">Plazo Estimado</PropertyInput>
                 <PropertyInput onChange={ this.handleInput } type="number"
                   name="dataSheet.totalShares" value={ property.dataSheet.totalShares } required>Total de Participaciones</PropertyInput>
-                <PropertyInput onChange={ this.handleInput } type="number" min="1" max={ property.dataSheet.totalShares }
+                <PropertyInput onChange={ this.handleInput } type="number" max={ property.dataSheet.totalShares }
                   name="dataSheet.sharesSold" value={ property.dataSheet.sharesSold }
                   required placeholder="0">Participaciones Vendidas</PropertyInput>
               </PropertyFieldset>
