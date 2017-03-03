@@ -43,7 +43,7 @@ class UserEdit extends Component{
 	handleInput(e) {
 		e.preventDefault()
 		let name = e.target.name
-		let newState = Object.assign( this.state )
+		let newState = Object.assign( {}, this.state )
 		newState.user[name] = e.target.value
 		this.setState(newState)
 	}
@@ -51,13 +51,19 @@ class UserEdit extends Component{
 	handleSubmit(e) {
     e.preventDefault()
 
-    if(this.props.path.path === "new") {
-			let newUser = Object.assign( this.state.user )
-			newUser['level'] = 'user'
-      create( newUser )
+		let user = Object.assign({}, this.state.user)
+		console.log('User Copy: ', user);
+
+		if(this.props.path.path === "new") {
+			user['level'] = 'user'
+      return create( user )
       .then( success => success && this.props.router.push('/users/list') )
     }
-    edit( this.state.user )
+
+		if (user.password === '') {
+			delete user.password
+		}
+    edit( user )
       .then( success => success && this.props.router.push('/users/list') )
   }
 

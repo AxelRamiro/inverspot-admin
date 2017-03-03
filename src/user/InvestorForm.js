@@ -32,8 +32,8 @@ function FormFieldset(props) {
     <fieldset>
       <legend>{ legend }</legend>
       { controls.map( e => <FormControl key={e.name} value={e.name.indexOf('.') > -1 ? source[ [e.name.split('.')[0]] ][ [e.name.split('.')[1]] ] : source[e.name] } { ...e } handleInput={ handleInput } /> ) }
-      {props.children}
-    </fieldset>
+        {props.children}
+      </fieldset>
   )
 }
 
@@ -115,10 +115,10 @@ class InvestorForm extends Component {
       list({_id: this.props.params.id},{}, 'invesmentData')
         .then( user => this.setState( (prev, props) => {
           return {
-            user: Object.assign( prev.user, user[0])
+            user: Object.assign( {}, user[0], prev.user)
           }
         } ) )
-        .catch(alert)
+        .catch(e => alert('Error aquí' + e))
     }
   }
 
