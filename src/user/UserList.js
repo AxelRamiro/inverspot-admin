@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Filterbar from '../components/Filterbar'
-//import Filterdate from '../components/Filterdate'
+import moment from 'moment'
 import User from './User'
 import { Link } from 'react-router'
 import { list } from '../Services/user'
@@ -11,10 +11,26 @@ function UserList(props) {
       return !(user.name.toLowerCase().indexOf(props.filterText.toLowerCase()) === -1 || (props.filterTag && props.filterTag !== user.level))
     })
 
+    if(filtered.length === 0) return null;
+
+    let csvHeader = [['Fecha', 'Nombre', 'Correo', 'Teléfono', 'Asesor', 'Forma de Contacto']]
+    let csvRows = filtered.map((usr) => {
+      return `${moment(usr.createdAt).format('DD/MM/YYYY')},${usr.name},${usr.email},${usr.telephone},${usr.asesor && usr.asesor.name},${usr.contactFrom}`
+    })
+    const csvString = csvHeader.concat(csvRows).join(String.fromCharCode(13))
+    let csvFile = encodeURIComponent(csvString)
+
     return (
-      <ul className="media-list search-results-list content-group">
-        {filtered.map(user => (<User key={user._id} user={user} onRemove={ props.onRemoveItem } />) )}
-      </ul>
+      <div className="row">
+        <div className="col-lg-12">
+          <a href={'data:attachment/csv;charset=utf-8,' + csvFile } target="_blank" download="export.csv">EXPORTAR CSV</a>
+          <div className="panel panel-body">
+            <ul className="media-list search-results-list content-group">
+              {filtered.map(user => (<User key={user._id} user={user} onRemove={ props.onRemoveItem } />) )}
+            </ul>
+          </div>
+        </div>
+      </div>
     )
 
 }
@@ -60,18 +76,13 @@ class Users extends Component {
           onFilterChange={ this.filter }>
           {/*<Filterdate />*/}
         </Filterbar>
-         <div className="row">
-          <div className="col-lg-12">
-            <div className="panel panel-body">
-              <UserList
-                users={ this.state.users }
-                onRemoveItem={ this.onRemoveItem }
-                filterText={ this.state.filterText }
-                filterTag={ this.state.filterTag } />
-              { this.state.users.length === 0 && <h3>No hay usuarios. <Link to="/users/new">Crear nuevo usuario</Link></h3> }
-            </div>
-          </div>
-        </div>
+
+        <UserList
+          users={ this.state.users }
+          onRemoveItem={ this.onRemoveItem }
+          filterText={ this.state.filterText }
+          filterTag={ this.state.filterTag } />
+        { this.state.users.length === 0 && <h3>No hay usuarios. <Link to="/users/new">Crear nuevo usuario</Link></h3> }
 
       </div>
     )

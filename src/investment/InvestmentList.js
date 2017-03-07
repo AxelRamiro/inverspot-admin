@@ -4,6 +4,8 @@ import Swal from 'react-swal'
 import Investment from './Investment'
 import { list, remove } from '../Services/crud'
 import { Link } from 'react-router'
+import currency from '../Services/currency'
+import moment from 'moment'
 
 function InvestmentList(props) {
 
@@ -16,10 +18,46 @@ function InvestmentList(props) {
       return matchName || matchTitle
     })
 
+    // console.log(filtered);
+    if(filtered.length === 0) return null;
+    let csvHeader = [['Usuario', 'Inmueble', 'Acciones', 'Monto', 'Fecha']]
+    let csvRows = filtered.map((inv) => {
+      return `${inv.investor.name},${inv.property.title},${inv.sharesNumber},"${currency(inv.amount)}",${moment(inv.createdAt).format('DD/MM/YYYY')}`
+    })
+    const csvString = csvHeader.concat(csvRows).join(String.fromCharCode(13))
+    let csvFile = encodeURIComponent(csvString)
+
     return (
-      <tbody>
-        {filtered.map(investment => (<Investment key={investment._id} investment={investment} onRemove={ props.onRemoveItem } />) )}
-      </tbody>
+      <div className="panel panel-body">
+        <div className="panel panel-success panel-bordered" style={{marginBottom: '-10px'}}>
+          <div className="panel-heading" style={{padding: '5px 0'}}>
+            <h5 className="panel-title"> Inversores</h5>
+            <div className="heading-elements">
+              <ul className="icons-list">
+                <li><a href={'data:attachment/csv;charset=utf-8,' + csvFile } target="_blank" download="export.csv">EXPORTAR CSV</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <table className="table datatable-basic">
+            <thead>
+              <tr>
+                <th>Nombre de Usuario</th>
+                <th>Acciones</th>
+                <th>Monto</th>
+                <th>Nombre de la Propiedad</th>
+                <th>Fecha</th>
+                <th className="text-center">Acciones</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {filtered.map(investment => (<Investment key={investment._id} investment={investment} onRemove={ props.onRemoveItem } />) )}
+            </tbody>
+
+          </table>
+        </div>
+      </div>
     )
 
   }
@@ -66,14 +104,9 @@ class investors extends Component {
     }
 
   render() {
-    const stylep ={
-      marginBottom: '-10px'
-    }
-    const stylep2={
-      padding: '5px 0'
-    }
-
     return (
+
+
       <div className="content">
 
         <Swal
@@ -89,37 +122,11 @@ class investors extends Component {
         <Filterbar nameFilter='Búsqueda de Inversores'  onFilterChange={ this.filter } >
         </Filterbar>
 
-        <div className="panel panel-body">
-          { this.state.investments.length > 0 && <div className="panel panel-success panel-bordered" style={stylep}>
-            <div className="panel-heading" style={stylep2}>
-              <h5 className="panel-title"> Inversores</h5>
-              <div className="heading-elements">
-                  <ul className="icons-list">
-                    <li><a data-action="reload"></a></li>
-                  </ul>
-              </div>
-            </div>
+        <InvestmentList investments={ this.state.investments } onRemoveItem={ this.onRemoveItem }
+          filterText={ this.state.filterText } filterTag={ this.state.filterTag } />
 
-            <table className="table datatable-basic">
-              <thead>
-                <tr>
-                  <th>Nombre de Usuario</th>
-                  <th>Acciones</th>
-                  <th>Monto</th>
-                  <th>Nombre de la Propiedad</th>
-                  <th>Fecha</th>
-                  <th className="text-center">Acciones</th>
-                </tr>
-              </thead>
-
-              <InvestmentList investments={ this.state.investments } onRemoveItem={ this.onRemoveItem }
-                filterText={ this.state.filterText } filterTag={ this.state.filterTag } />
-
-            </table>
-          </div> }
-          { this.state.investments.length === 0 &&
-            <h3>No hay inversiones. <Link to="/investments/new">Crear nueva.</Link></h3> }
-        </div>
+        { this.state.investments.length === 0 &&
+          <h3>No hay inversiones. <Link to="/investments/new">Crear nueva.</Link></h3> }
 
       </div>
     )
